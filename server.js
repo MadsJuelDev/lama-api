@@ -28,6 +28,7 @@ app.listen(PORT, function () {
 //Parse request as JSON
 app.use(express.json());
 
+// This is a commit Test --- DELETE THIS COMMENT LATER
 //routes (get,post,put,delete (CRUD))
 //Auth
 app.use("/api/User", AuthRoutes);
