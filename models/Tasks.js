@@ -5,7 +5,11 @@ const Schema = mongoose.Schema;
 
 let TaskSchema = new Schema({
   archived: { type: Boolean },
+  isCollapsed: { type: Boolean },
   date: { type: String },
+  description: { type: String },
+  urgency: { type: String },
+  status: { type: String },
   projectId: { type: String },
   task: { type: String },
   userId: { type: String },
