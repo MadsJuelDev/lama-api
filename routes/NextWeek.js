@@ -21,18 +21,20 @@ let five = moment(todayDate, "DD/MM/YYYY").add(5, "days");
 let dateFive = moment(five).format("DD/MM/YYYY");
 let six = moment(todayDate, "DD/MM/YYYY").add(6, "days");
 let dateSix = moment(six).format("DD/MM/YYYY");
+let seven = moment(todayDate, "DD/MM/YYYY").add(7, "days");
+let dateSeven = moment(seven).format("DD/MM/YYYY");
 
 // ***** CRUD operations ***** //
 
-//Read all next weeks worth of tasks- get
-router.get("/today/:userId/:archived/", (req, res) => {
-  Tasks.find({
+//Read tasks for Today
+router.get("/today/:userId/:archived/", async (req, res) => {
+  await Tasks.find({
     userId: req.params.userId,
     archived: req.params.archived,
     date: { $eq: todayDate },
   })
     .then((data) => {
-      console.log("Week 7", data);
+      console.log("Today: ", data);
       res.send(mapProdArray(data));
     })
     .catch((err) => {
@@ -41,8 +43,8 @@ router.get("/today/:userId/:archived/", (req, res) => {
 });
 
 //Read all next weeks worth of tasks- get
-router.get("/nextSeven/:userId/:archived/", (req, res) => {
-  Tasks.find({
+router.get("/nextSeven/:userId/:archived/", async (req, res) => {
+  await Tasks.find({
     userId: req.params.userId,
     archived: req.params.archived,
     $or: [
@@ -53,6 +55,7 @@ router.get("/nextSeven/:userId/:archived/", (req, res) => {
       { date: { $eq: dateFour } },
       { date: { $eq: dateFive } },
       { date: { $eq: dateSix } },
+      { date: { $eq: dateSeven } },
     ],
   })
     .then((data) => {

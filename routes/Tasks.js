@@ -44,8 +44,8 @@ router.post("/", (req, res) => {
 // console.log();
 
 //Read all Tasks from specific project
-router.get("/:userId/:archived/:projectId", (req, res) => {
-  Tasks.find({
+router.get("/:userId/:archived/:projectId", async (req, res) => {
+  await Tasks.find({
     userId: req.params.userId,
     archived: req.params.archived,
     projectId: req.params.projectId,
@@ -59,20 +59,20 @@ router.get("/:userId/:archived/:projectId", (req, res) => {
 });
 
 //Read all next weeks worth of tasks- get
-router.get("/:userId/:archived/:date", (req, res) => {
-  Tasks.find({
-    userId: req.params.userId,
-    archived: req.params.archived,
-    date: { $lte: moment(req.params.date, "DD-MM-YYYY").add(7, "days") },
-  })
-    .then((data) => {
-      console.log("Week 7", data);
-      res.send(mapProdArray(data));
-    })
-    .catch((err) => {
-      res.status(500).send({ message: err.message });
-    });
-});
+// router.get("/:userId/:archived/:date", async (req, res) => {
+//   await Tasks.find({
+//     userId: req.params.userId,
+//     archived: req.params.archived,
+//     date: { $lte: moment(req.params.date, "DD-MM-YYYY").add(8, "days") },
+//   })
+//     .then((data) => {
+//       console.log("Week 7", data);
+//       res.send(mapProdArray(data));
+//     })
+//     .catch((err) => {
+//       res.status(500).send({ message: err.message });
+//     });
+// });
 
 // // Read all Tasks fomr user - get
 // router.get("/userId/:userId", (req, res) => {
@@ -86,8 +86,8 @@ router.get("/:userId/:archived/:date", (req, res) => {
 // });
 
 //Read all Tasks - get
-router.get("/:userId/:archived/", (req, res) => {
-  Tasks.find({
+router.get("/:userId/:archived/", async (req, res) => {
+  await Tasks.find({
     userId: req.params.userId,
     archived: req.params.archived,
   })
@@ -174,6 +174,7 @@ function mapProdArray(obj) {
   let outputArr = obj.map((element) => ({
     id: element._id,
     archived: element.archived,
+    date: element.date,
     projectId: element.projectId,
     task: element.task,
     userId: element.userId,
