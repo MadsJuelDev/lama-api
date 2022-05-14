@@ -2,6 +2,9 @@ const router = require("express").Router();
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const moment = require("moment");
+
+let currentDate = moment().format("DD/MM/YYYY");
 
 const { registerValidation, loginValidation } = require("../validation");
 
@@ -25,9 +28,13 @@ router.post("/register", async (req, res) => {
 
   //create user object and save to DB
   const userObject = new User({
-    name: req.body.name,
+    username: req.body.username,
+    fName: "",
+    lName: "",
     email: req.body.email,
     password,
+    date: currentDate,
+    userId: req.body.username,
   });
   try {
     const savedUser = await userObject.save();
@@ -71,16 +78,16 @@ router.post("/login", async (req, res) => {
   const token = jwt.sign(
     {
       //payload
-      name: user.name,
-      id: user._id,
+      username: user.name,
+      email: user.email,
     },
     //TOKEN_SECRET
     process.env.TOKEN_SECRET,
     { expiresIn: process.env.JWT_EXPIRES_IN }
     //Expiration time
   );
-  const username = user.name;
-  const userID = user._id;
+  const username = user.username;
+  const userID = user.userId;
   //attach authentication token to header
   res.header("auth-token", token).json({
     error: null,
