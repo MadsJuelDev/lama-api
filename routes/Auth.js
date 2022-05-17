@@ -21,6 +21,11 @@ router.post("/register", async (req, res) => {
   if (emailExist) {
     return res.status(400).json({ error: "Email already exists" });
   }
+  //check if username already exists
+  const userNameExist = await User.findOne({ username: req.body.username });
+  if (userNameExist) {
+    return res.status(418).json({ error: "Username already exists" });
+  }
 
   //hash the password
   const salt = await bcrypt.genSalt(10);
@@ -44,8 +49,8 @@ router.post("/register", async (req, res) => {
   }
 });
 
-router.get("/", (req, res) => {
-  User.find()
+router.get("/:email", (req, res) => {
+  User.find({ email: req.params.email })
     .then((data) => {
       res.send(data);
     })
@@ -62,7 +67,7 @@ router.post("/login", async (req, res) => {
     return res.status(400).json({ error: error.details[0].message });
   }
   //if info is valid find user
-  const user = await User.findOne({ email: req.body.email });
+  const user = await User.findOne({ username: req.body.username });
 
   //Throw error if email is wrong
   if (!user) {
@@ -86,8 +91,6 @@ router.post("/login", async (req, res) => {
     { expiresIn: process.env.JWT_EXPIRES_IN }
     //Expiration time
   );
-  const username = user.username;
-  const userID = user.userId;
   //attach authentication token to header
   res.header("auth-token", token).json({
     error: null,

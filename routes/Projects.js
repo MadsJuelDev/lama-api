@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const Projects = require("../models/Projects");
 const NodeCache = require("node-cache");
+const { validateToken } = require("../validation");
 
 // stdTTL = standard time to live
 const cache = new NodeCache({ stdTTL: 600 });
@@ -26,43 +27,50 @@ router.post("/", async (req, res) => {
 });
 
 // Read ALL Projects - get
-router.get("/", async (req, res) => {
-  try {
-    // try to get data from the cache
-    let ProjectsCache = cache.get("allProjects");
+// router.get("/", async (req, res) => {
+//   try {
+//     // try to get data from the cache
+//     let ProjectsCache = cache.get("allProjects");
 
-    if (!ProjectsCache) {
-      let data = await Projects.find()
-        .where("userId", "==", "1234abc")
-        .orderBy("projectId");
-      const timeToLiveSec = 30;
-      cache.set("allProjects", data, timeToLiveSec);
-      res.send(mapProdArray(data));
-    } else {
-      res.send(mapProdArray(TasksCache));
-    }
-  } catch (err) {
-    res.status(500).send({ message: err.message });
-  }
-});
+//     if (!ProjectsCache) {
+//       let data = await Projects.find()
+//         .where("userId", "==", "1234abc")
+//         .orderBy("projectId");
+//       const timeToLiveSec = 30;
+//       cache.set("allProjects", data, timeToLiveSec);
+//       res.send(mapProdArray(data));
+//     } else {
+//       res.send(mapProdArray(ProjectsCache));
+//     }
+//   } catch (err) {
+//     res.status(500).send({ message: err.message });
+//   }
+// });
 
 // Read all Projects colors - get
 router.get("/userId/:userId", async (req, res) => {
-  try {
-    // try to get data from the cache
-    let specificUserProjectCache = cache.get("allUserProjects");
-
-    if (!specificUserProjectCache) {
-      let data = await Projects.find();
-      const timeToLiveSec = 30;
-      cache.set("allUserProjectss", data, timeToLiveSec);
+  await Projects.find({ userId: req.params.userId })
+    .then((data) => {
       res.send(mapProdArray(data));
-    } else {
-      res.send(mapProdArray(TasksCache));
-    }
-  } catch (err) {
-    res.status(500).send({ message: err.message });
-  }
+    })
+    .catch((err) => {
+      res.status(500).send({ message: err.message });
+    });
+
+  // try {
+  //   let specificUserProjectCache = cache.get("allUserProjects");
+
+  //   if (!specificUserProjectCache) {
+  //     let data = await Projects.find().where("userId", "==", req.params.userId);
+  //     const timeToLiveSec = 30;
+  //     cache.set("allUserProjectss", data, timeToLiveSec);
+  //     res.send(mapProdArray(data));
+  //   } else {
+  //     res.send(mapProdArray(specificUserProjectCache));
+  //   }
+  // } catch (err) {
+  //   res.status(500).send({ message: err.message });
+  // }
 });
 
 // Read specific Projects - get

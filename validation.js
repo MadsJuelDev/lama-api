@@ -13,7 +13,7 @@ const registerValidation = (data) => {
 //validating login
 const loginValidation = (data) => {
   const schema = Joi.object({
-    email: Joi.string().min(6).max(255).required(),
+    username: Joi.string().min(6).max(255).required(),
     password: Joi.string().min(6).max(255).required(),
   });
   return schema.validate(data);
@@ -21,7 +21,7 @@ const loginValidation = (data) => {
 
 //logic to verify token (JWT)
 const validateToken = (req, res, next) => {
-  const token = req.header("auth-token");
+  const token = req.header("authtoken");
   if (!token) return res.status(401).json({ error: "Access Denied" });
   try {
     const verified = jwt.verify(token, process.env.TOKEN_SECRET);
