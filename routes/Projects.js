@@ -7,9 +7,8 @@ const { validateToken } = require("../validation");
 const cache = new NodeCache({ stdTTL: 600 });
 
 // ***** CRUD operations ***** //
-
 // Create Projects - post
-router.post("/", async (req, res) => {
+router.post("/", validateToken, async (req, res) => {
   const projectExist = await Projects.findOne({ name: req.body.name });
   if (projectExist) {
     return res.status(400).json({ error: "Project Name already exists" });
@@ -26,8 +25,8 @@ router.post("/", async (req, res) => {
     });
 });
 
-// Read all Collab Projects colors - get
-router.get("/collab/:collabId", async (req, res) => {
+// Read all Collab Projects - get
+router.get("/collab/:collabId", validateToken, async (req, res) => {
   await Projects.find({
     $or: [
       { collabIdOne: req.params.collabId },
@@ -44,8 +43,8 @@ router.get("/collab/:collabId", async (req, res) => {
     });
 });
 
-// Read all Collab & user created Projects colors - get
-router.get("/all/:collabId", async (req, res) => {
+// Read all Collab & user created Projects - get
+router.get("/all/:collabId", validateToken, async (req, res) => {
   await Projects.find({
     $or: [
       { userId: req.params.collabId },
@@ -64,7 +63,7 @@ router.get("/all/:collabId", async (req, res) => {
 });
 
 // Read all user created Projects  - get
-router.get("/userId/:userId", async (req, res) => {
+router.get("/userId/:userId", validateToken, async (req, res) => {
   await Projects.find({ userId: req.params.userId })
     .then((data) => {
       res.send(mapProdArray(data));
@@ -75,7 +74,7 @@ router.get("/userId/:userId", async (req, res) => {
 });
 
 // Read specific Projects - get
-router.get("/:id", (req, res) => {
+router.get("/:id", validateToken, (req, res) => {
   Projects.findById(req.params.projectId)
     .then((data) => {
       res.send(data);
@@ -85,33 +84,8 @@ router.get("/:id", (req, res) => {
     });
 });
 
-// Update specific Projects - put
-router.put("/:id", (req, res) => {
-  const id = req.params.id;
-  Projects.findByIdAndUpdate(id, req.body)
-    .then((data) => {
-      if (!data) {
-        res.status(404).send({
-          message:
-            "Cannot update Projects with id=" +
-            id +
-            ". Maybe Projects was not found?",
-        });
-      } else {
-        cache.flushAll();
-        res.send({ message: "Projects was succesfully updated!" });
-      }
-    })
-    .catch((err) => {
-      res
-        .status(500)
-        .send({ message: "Error updating Projects with id=" + id });
-    });
-});
-
 // Delete specific Projects - delete
-
-router.delete("/:id", (req, res) => {
+router.delete("/:id", validateToken, (req, res) => {
   const id = req.params.id;
   Projects.findByIdAndDelete(id)
     .then((data) => {

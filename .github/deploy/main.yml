@@ -1,0 +1,17 @@
+# name: Node.JS CI/CD
+
+# on:
+#   push:
+#     branches: [main]
+
+# jobs:
+#   deploy:
+#     name: Deploy
+#     needs: [test]
+#     runs-on: ubuntu-latest
+
+#    steps:
+#       - name: Checkout
+#         uses: actions/checkout@v2
+#         with:
+#           fetch-depth: 0

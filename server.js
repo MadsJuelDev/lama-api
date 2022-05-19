@@ -2,12 +2,13 @@ const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
 
+//Swagger
 const swaggerUi = require("swagger-ui-express");
 const yaml = require("yamljs");
-
 const swaggerDefinition = yaml.load("./swagger.yaml");
 app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDefinition));
-//Welcom Route
+
+//Welcome Route
 app.get("/api/lama", (req, res) => {
   res.status(200).send({ message: "Welcome to LaMa Project API" });
 });
@@ -20,6 +21,7 @@ const AuthRoutes = require("./routes/Auth");
 
 require("dotenv-flow").config();
 const PORT = process.env.PORT || 4001;
+
 // Is Server running?
 app.listen(PORT, function () {
   console.log("The Server is running on port: " + PORT);
@@ -28,7 +30,6 @@ app.listen(PORT, function () {
 //Parse request as JSON
 app.use(express.json());
 
-// This is a commit Test --- DELETE THIS COMMENT LATER
 //routes (get,post,put,delete (CRUD))
 //Auth
 app.use("/api/User", AuthRoutes);

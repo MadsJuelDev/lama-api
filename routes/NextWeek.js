@@ -1,11 +1,7 @@
 const router = require("express").Router();
 const Tasks = require("../models/Tasks");
-const NodeCache = require("node-cache");
 const moment = require("moment");
-const { equal } = require("joi");
-
-// stdTTL = standard time to live
-const cache = new NodeCache({ stdTTL: 600 });
+const { validateToken } = require("../validation");
 
 // Elequent Date hack
 let todayDate = moment().format("DD/MM/YYYY");
@@ -27,7 +23,7 @@ let dateSeven = moment(seven).format("DD/MM/YYYY");
 // ***** CRUD operations ***** //
 
 //Read tasks for Today
-router.get("/today/:userId/:archived/", async (req, res) => {
+router.get("/today/:userId/:archived/", validateToken, async (req, res) => {
   await Tasks.find({
     userId: req.params.userId,
     archived: req.params.archived,
@@ -43,7 +39,7 @@ router.get("/today/:userId/:archived/", async (req, res) => {
 });
 
 //Read all next weeks worth of tasks- get
-router.get("/nextSeven/:userId/:archived/", async (req, res) => {
+router.get("/nextSeven/:userId/:archived/", validateToken, async (req, res) => {
   await Tasks.find({
     userId: req.params.userId,
     archived: req.params.archived,
@@ -64,47 +60,6 @@ router.get("/nextSeven/:userId/:archived/", async (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({ message: err.message });
-    });
-});
-
-// Update specific Tasks - put
-router.put("/:id", (req, res) => {
-  const id = req.params.id;
-  Tasks.findByIdAndUpdate(id, req.body)
-    .then((data) => {
-      if (!data) {
-        res.status(404).send({
-          message:
-            "Cannot update Tasks with id=" +
-            id +
-            ". Maybe Tasks was not found?",
-        });
-      } else {
-        res.send({ message: "Tasks was succesfully updated!" });
-      }
-    })
-    .catch((err) => {
-      res.status(500).send({ message: "Error updating Tasks with id=" + id });
-    });
-});
-
-// Delete specific Tasks - delete
-
-router.delete("/:id", (req, res) => {
-  const id = req.params.id;
-  Tasks.findByIdAndDelete(id)
-    .then((data) => {
-      if (!data) {
-        res.status(404).send({
-          message:
-            "Cannot delete Task with id=" + id + ". Maybe Task was not found?",
-        });
-      } else {
-        res.send({ message: "Task was succesfully deleted!" });
-      }
-    })
-    .catch((err) => {
-      res.status(500).send({ message: "Error deleting Task with id=" + id });
     });
 });
 

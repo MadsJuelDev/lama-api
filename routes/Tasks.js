@@ -1,14 +1,10 @@
 const router = require("express").Router();
 const Tasks = require("../models/Tasks");
-const NodeCache = require("node-cache");
-
-// stdTTL = standard time to live
-const cache = new NodeCache({ stdTTL: 600 });
+const { validateToken } = require("../validation");
 
 // ***** CRUD operations ***** //
-
-// Create Tasks - post
-router.post("/", (req, res) => {
+// Create Tasks
+router.post("/", validateToken, (req, res) => {
   data = req.body;
   Tasks.insertMany(data)
     .then((data) => {
@@ -20,30 +16,8 @@ router.post("/", (req, res) => {
     });
 });
 
-// Read ALL Tasks types - get
-// router.get("/", async (req, res) => {
-//   try {
-//     // try to get data from the cache
-//     let TasksCache = cache.get("allTasks");
-
-//     if (!TasksCache) {
-//       let data = await Tasks.find();
-//       const timeToLiveSec = 30;
-//       cache.set("allTasks", data, timeToLiveSec);
-//       res.send(mapProdArray(data));
-//     } else {
-//       res.send(mapProdArray(TasksCache));
-//     }
-//   } catch (err) {
-//     res.status(500).send({ message: err.message });
-//   }
-// });
-// const dateNow = moment().format("DD/MM/YYYY");
-// dateNow.diff(dateWeek);
-// console.log();
-
 //Read all Tasks from specific project
-router.get("/:userId/:archived/:projectId", async (req, res) => {
+router.get("/:userId/:archived/:projectId", validateToken, async (req, res) => {
   await Tasks.find({
     userId: req.params.userId,
     archived: req.params.archived,
@@ -57,35 +31,8 @@ router.get("/:userId/:archived/:projectId", async (req, res) => {
     });
 });
 
-//Read all next weeks worth of tasks- get
-// router.get("/:userId/:archived/:date", async (req, res) => {
-//   await Tasks.find({
-//     userId: req.params.userId,
-//     archived: req.params.archived,
-//     date: { $lte: moment(req.params.date, "DD-MM-YYYY").add(8, "days") },
-//   })
-//     .then((data) => {
-//       console.log("Week 7", data);
-//       res.send(mapProdArray(data));
-//     })
-//     .catch((err) => {
-//       res.status(500).send({ message: err.message });
-//     });
-// });
-
-// // Read all Tasks fomr user - get
-// router.get("/userId/:userId", (req, res) => {
-//   Tasks.find({ color: req.params.color })
-//     .then((data) => {
-//       res.send(mapProdArray(data));
-//     })
-//     .catch((err) => {
-//       res.status(500).send({ message: err.message });
-//     });
-// });
-
 //Read all Tasks - get
-router.get("/:userId/:archived/", async (req, res) => {
+router.get("/:userId/:archived/", validateToken, async (req, res) => {
   await Tasks.find({
     userId: req.params.userId,
     archived: req.params.archived,
@@ -98,38 +45,8 @@ router.get("/:userId/:archived/", async (req, res) => {
     });
 });
 
-// // Get Tasks based on user and not archived
-// router.get("/", async (req, res) => {
-//   try {
-//     // try to get data from the cache
-//     let TasksCache = cache.get("allTasks");
-
-//     if (!TasksCache) {
-//       let data = await Tasks.find();
-//       const timeToLiveSec = 30;
-//       cache.set("allTasks", data, timeToLiveSec);
-//       res.send(mapProdArray(data));
-//     } else {
-//       res.send(mapProdArray(TasksCache));
-//     }
-//   } catch (err) {
-//     res.status(500).send({ message: err.message });
-//   }
-// });
-
-// // Read specific Tasks - get
-// router.get("/:id", (req, res) => {
-//   Tasks.findById(req.params.id)
-//     .then((data) => {
-//       res.send(data);
-//     })
-//     .catch((err) => {
-//       res.status(500).send({ message: err.message });
-//     });
-// });
-
 // Update specific Tasks - put
-router.put("/:id", (req, res) => {
+router.put("/:id", validateToken, (req, res) => {
   const id = req.params.id;
   Tasks.findByIdAndUpdate(id, req.body)
     .then((data) => {
@@ -146,26 +63,6 @@ router.put("/:id", (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({ message: "Error updating Tasks with id=" + id });
-    });
-});
-
-// Delete specific Tasks - delete
-
-router.delete("/:id", (req, res) => {
-  const id = req.params.id;
-  Tasks.findByIdAndDelete(id)
-    .then((data) => {
-      if (!data) {
-        res.status(404).send({
-          message:
-            "Cannot delete Task with id=" + id + ". Maybe Task was not found?",
-        });
-      } else {
-        res.send({ message: "Task was succesfully deleted!" });
-      }
-    })
-    .catch((err) => {
-      res.status(500).send({ message: "Error deleting Task with id=" + id });
     });
 });
 
