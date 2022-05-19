@@ -12,10 +12,6 @@ app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDefinition));
 app.get("/api/lama", (req, res) => {
   res.status(200).send({ message: "Welcome to LaMa Project API" });
 });
-//Test Route
-app.get("/welcome", (req, res) => {
-  res.status(200).send({ message: "Welcome to LaMa Project API" });
-});
 
 //import product routes
 const TaskRoutes = require("./routes/Tasks");
