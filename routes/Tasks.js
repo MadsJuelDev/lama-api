@@ -8,7 +8,6 @@ router.post("/", validateToken, (req, res) => {
   data = req.body;
   Tasks.insertMany(data)
     .then((data) => {
-      cache.flushAll();
       res.status(201).send(data);
     })
     .catch((err) => {
