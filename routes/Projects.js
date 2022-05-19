@@ -26,28 +26,44 @@ router.post("/", async (req, res) => {
     });
 });
 
-// Read ALL Projects - get
-// router.get("/", async (req, res) => {
-//   try {
-//     // try to get data from the cache
-//     let ProjectsCache = cache.get("allProjects");
+// Read all Collab Projects colors - get
+router.get("/collab/:collabId", async (req, res) => {
+  await Projects.find({
+    $or: [
+      { collabIdOne: req.params.collabId },
+      { collabIdTwo: req.params.collabId },
+      { collabIdThree: req.params.collabId },
+      { collabIdFour: req.params.collabId },
+    ],
+  })
+    .then((data) => {
+      res.send(mapProdArray(data));
+    })
+    .catch((err) => {
+      res.status(500).send({ message: err.message });
+    });
+});
 
-//     if (!ProjectsCache) {
-//       let data = await Projects.find()
-//         .where("userId", "==", "1234abc")
-//         .orderBy("projectId");
-//       const timeToLiveSec = 30;
-//       cache.set("allProjects", data, timeToLiveSec);
-//       res.send(mapProdArray(data));
-//     } else {
-//       res.send(mapProdArray(ProjectsCache));
-//     }
-//   } catch (err) {
-//     res.status(500).send({ message: err.message });
-//   }
-// });
+// Read all Collab & user created Projects colors - get
+router.get("/all/:collabId", async (req, res) => {
+  await Projects.find({
+    $or: [
+      { userId: req.params.collabId },
+      { collabIdOne: req.params.collabId },
+      { collabIdTwo: req.params.collabId },
+      { collabIdThree: req.params.collabId },
+      { collabIdFour: req.params.collabId },
+    ],
+  })
+    .then((data) => {
+      res.send(mapProdArray(data));
+    })
+    .catch((err) => {
+      res.status(500).send({ message: err.message });
+    });
+});
 
-// Read all Projects colors - get
+// Read all user created Projects  - get
 router.get("/userId/:userId", async (req, res) => {
   await Projects.find({ userId: req.params.userId })
     .then((data) => {
@@ -56,21 +72,6 @@ router.get("/userId/:userId", async (req, res) => {
     .catch((err) => {
       res.status(500).send({ message: err.message });
     });
-
-  // try {
-  //   let specificUserProjectCache = cache.get("allUserProjects");
-
-  //   if (!specificUserProjectCache) {
-  //     let data = await Projects.find().where("userId", "==", req.params.userId);
-  //     const timeToLiveSec = 30;
-  //     cache.set("allUserProjectss", data, timeToLiveSec);
-  //     res.send(mapProdArray(data));
-  //   } else {
-  //     res.send(mapProdArray(specificUserProjectCache));
-  //   }
-  // } catch (err) {
-  //   res.status(500).send({ message: err.message });
-  // }
 });
 
 // Read specific Projects - get
@@ -139,6 +140,10 @@ function mapProdArray(obj) {
     name: element.name,
     projectId: element.projectId,
     userId: element.userId,
+    collabIdOne: element.collabIdOne,
+    collabIdTwo: element.collabIdTwo,
+    collabIdThree: element.collabIdThree,
+    collabIdFour: element.collabIdFour,
     uri: `/api/Projects/${element._id}`,
   }));
   return outputArr;
