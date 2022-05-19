@@ -4,9 +4,9 @@ const { validateToken } = require("../validation");
 
 // ***** CRUD operations ***** //
 // Create Tasks
-router.post("/", validateToken, (req, res) => {
+router.post("/", validateToken, async (req, res) => {
   data = req.body;
-  Tasks.insertMany(data)
+  await Tasks.insertMany(data)
     .then((data) => {
       res.status(201).send(data);
     })
