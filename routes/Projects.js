@@ -63,7 +63,7 @@ router.get("/all/:collabId", validateToken, async (req, res) => {
 });
 
 // Read all user created Projects  - get
-router.get("/userId/:userId", validateToken, async (req, res) => {
+router.get("/userId/:userId", async (req, res) => {
   await Projects.find({ userId: req.params.userId })
     .then((data) => {
       res.send(mapProdArray(data));
