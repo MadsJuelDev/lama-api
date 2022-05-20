@@ -11,8 +11,8 @@ let TaskSchema = new Schema({
   urgency: { type: String },
   status: { type: String },
   projectId: { type: String },
-  task: { type: String },
-  userId: { type: String },
+  task: { type: String, required: true },
+  userId: { type: String, required: true },
 });
 
 module.exports = mongoose.model("Tasks", TaskSchema);
