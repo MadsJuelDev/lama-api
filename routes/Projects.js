@@ -84,6 +84,27 @@ router.get("/:id", validateToken, (req, res) => {
     });
 });
 
+// Update specific Tasks - put
+router.put("/:id", validateToken, async (req, res) => {
+  const id = req.params.id;
+  await Projects.findByIdAndUpdate(id, req.body)
+    .then((data) => {
+      if (!data) {
+        res.status(404).send({
+          message:
+            "Cannot update Project with id=" +
+            id +
+            ". Maybe Project was not found?",
+        });
+      } else {
+        res.send({ message: "Project was succesfully updated!" });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({ message: "Error updating Project with id=" + id });
+    });
+});
+
 // Delete specific Projects - delete
 router.delete("/:id", validateToken, (req, res) => {
   const id = req.params.id;
