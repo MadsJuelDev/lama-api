@@ -18,9 +18,33 @@ router.post("/", validateToken, async (req, res) => {
 //Read all Tasks from specific project
 router.get("/:userId/:archived/:projectId", validateToken, async (req, res) => {
   await Tasks.find({
-    userId: req.params.userId,
-    archived: req.params.archived,
-    projectId: req.params.projectId,
+    $or: [
+      {
+        userId: req.params.userId,
+        archived: req.params.archived,
+        projectId: req.params.projectId,
+      },
+      {
+        collabIdOne: req.params.userId,
+        archived: req.params.archived,
+        projectId: req.params.projectId,
+      },
+      {
+        collabIdTwo: req.params.userId,
+        archived: req.params.archived,
+        projectId: req.params.projectId,
+      },
+      {
+        collabIdThree: req.params.userId,
+        archived: req.params.archived,
+        projectId: req.params.projectId,
+      },
+      {
+        collabIdFour: req.params.userId,
+        archived: req.params.archived,
+        projectId: req.params.projectId,
+      },
+    ],
   })
     .then((data) => {
       res.send(mapProdArray(data));
