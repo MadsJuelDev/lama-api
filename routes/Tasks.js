@@ -45,9 +45,9 @@ router.get("/:userId/:archived/", validateToken, async (req, res) => {
 });
 
 // Update specific Tasks - put
-router.put("/:id", validateToken, (req, res) => {
+router.put("/:id", validateToken, async (req, res) => {
   const id = req.params.id;
-  Tasks.findByIdAndUpdate(id, req.body)
+  await Tasks.findByIdAndUpdate(id, req.body)
     .then((data) => {
       if (!data) {
         res.status(404).send({
