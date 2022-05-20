@@ -67,6 +67,11 @@ function mapProdArray(obj) {
   let outputArr = obj.map((element) => ({
     id: element._id,
     archived: element.archived,
+    isCollapsed: element.isCollapsed,
+    date: element.date,
+    description: element.description,
+    urgency: element.urgency,
+    status: element.status,
     projectId: element.projectId,
     task: element.task,
     userId: element.userId,
