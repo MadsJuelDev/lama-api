@@ -11,7 +11,7 @@ const cache = new NodeCache({ stdTTL: 600 });
 router.post("/", validateToken, async (req, res) => {
   const projectExist = await Projects.findOne({ name: req.body.name });
   if (projectExist) {
-    return res.status(400).json({ error: "Project Name already exists" });
+    return res.status(403).json({ error: "Project Name already exists" });
   }
 
   data = req.body;

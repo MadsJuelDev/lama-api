@@ -11,7 +11,7 @@ let TaskSchema = new Schema({
   urgency: { type: String },
   status: { type: String },
   projectId: { type: String },
-  task: { type: String, required: true },
+  task: { type: String, required: true, min: 1 },
   userId: { type: String, required: true },
 });
 
