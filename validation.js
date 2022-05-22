@@ -19,7 +19,7 @@ const loginValidation = (data) => {
   return schema.validate(data);
 };
 
-//validating login
+//validating task
 const taskValidation = (data) => {
   const schema = Joi.object({
     archived: Joi.boolean(),
