@@ -357,9 +357,9 @@ describe("Task workflow tests", () => {
 it("register + login the user, create a task in the db under next_7 with todays date + 7 days as date, verify it, and archive it (put)", (done) => {
   // 1) Register a new LaMa user
   let user = {
-    username: "aaaaaa",
-    email: "aaa@aaa.dk",
-    password: "aaaaaa",
+    username: "cccccc",
+    email: "ccc@ccc.dk",
+    password: "cccccc",
   };
   chai
     .request(server)
@@ -372,8 +372,8 @@ it("register + login the user, create a task in the db under next_7 with todays 
       expect(res.body.error).to.be.equal(null);
 
       let newlyCreatedUser = {
-        username: "aaaaaa",
-        password: "aaaaaa",
+        username: "cccccc",
+        password: "cccccc",
       };
       // 2) Login the user
       chai
@@ -390,7 +390,7 @@ it("register + login the user, create a task in the db under next_7 with todays 
           // 2) Verify 0 tasks in the test DB
           chai
             .request(server)
-            .get("/api/tasks/aaaaaa/false")
+            .get("/api/tasks/cccccc/false")
             .set({ authtoken: token })
             .end((err, res) => {
               // Attributes a responses should have
@@ -408,7 +408,7 @@ it("register + login the user, create a task in the db under next_7 with todays 
                 status: "To Do",
                 projectId: "NEXT_7",
                 task: "test3",
-                userId: "aaaaaa",
+                userId: "cccccc",
               };
 
               chai
@@ -441,7 +441,7 @@ it("register + login the user, create a task in the db under next_7 with todays 
 
                   chai
                     .request(server)
-                    .get("/api/nextweek/nextSeven/aaaaaa/false")
+                    .get("/api/nextweek/nextSeven/cccccc/false")
                     .set({ authtoken: token })
                     .end((err, res) => {
                       // Attributes a responses should have
@@ -459,7 +459,7 @@ it("register + login the user, create a task in the db under next_7 with todays 
                         status: "To Do",
                         projectId: "NEXT_7",
                         task: "test3",
-                        userId: "aaaaaa",
+                        userId: "cccccc",
                       };
 
                       chai
@@ -478,7 +478,7 @@ it("register + login the user, create a task in the db under next_7 with todays 
                           // 6) Verify only two tasks in the test DB
                           chai
                             .request(server)
-                            .get("/api/tasks/aaaaaa/false")
+                            .get("/api/tasks/cccccc/false")
                             .set({ authtoken: token })
                             .end((err, res) => {
                               // Attributes a responses should have

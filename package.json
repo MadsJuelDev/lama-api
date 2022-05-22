@@ -7,7 +7,7 @@
     "start-dev": "cross-env NODE_ENV=development nodemon server.js",
     "unit-test": "cross-env NODE_ENV=test mocha --timeout 10000 test/unit --exit",
     "project-workflow-test": "cross-env NODE_ENV=test mocha --timeout 10000 test/project-workflow --exit",
-    "error-test": "cross-env NODE_ENV=test mocha --timeout 30000 test/error --exit",
+    "error-test": "cross-env NODE_ENV=test mocha --timeout 10000 test/error --exit",
     "task-workflow-test": "cross-env NODE_ENV=test mocha --timeout 10000 test/task-workflow --exit"
   },
   "keywords": [

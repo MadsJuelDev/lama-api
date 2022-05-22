@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const Tasks = require("../models/Tasks");
 const { validateToken } = require("../validation");
-
+const { taskValidation } = require("../validation");
 // ***** CRUD operations ***** //
 // Create Tasks
 router.post("/", validateToken, async (req, res) => {
@@ -72,9 +72,11 @@ router.get("/:userId/:archived/", validateToken, async (req, res) => {
 router.put("/:id", validateToken, async (req, res) => {
   const id = req.params.id;
   const { error } = taskValidation(req.body);
+  console.log(error);
   if (error) {
     return res.status(400).json({ error: error.details[0].message });
   }
+
   await Tasks.findByIdAndUpdate(id, req.body)
     .then((data) => {
       if (!data) {
