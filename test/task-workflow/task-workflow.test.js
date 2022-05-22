@@ -55,7 +55,7 @@ describe("Task workflow tests", () => {
       .post("/api/user/register")
       .send(user)
       .end((err, res) => {
-        // Attributes a responses should have
+        // Assert
         res.should.have.status(200);
         res.body.should.be.a("object");
         expect(res.body.error).to.be.equal(null);
@@ -70,7 +70,7 @@ describe("Task workflow tests", () => {
           .post("/api/user/login")
           .send(newlyCreatedUser)
           .end((err, res) => {
-            // Attributes a responses should have
+            // Assert
             res.should.have.status(200);
             expect(res.body.error).to.be.equal(null);
             //Setting JWT token for Verification further
@@ -81,7 +81,7 @@ describe("Task workflow tests", () => {
               .request(server)
               .get("/api/projects/userId/1234abc")
               .end((err, res) => {
-                // Attributes a responses should have
+                // Assert
                 expect(res.status).to.be.equal(200);
                 expect(res.body).to.be.a("array");
                 expect(res.body.length).to.be.eql(0);
@@ -103,7 +103,7 @@ describe("Task workflow tests", () => {
                   .set({ authtoken: token })
                   .send(project)
                   .end((err, res) => {
-                    // Attributes a responses should have
+                    // Assert
                     expect(res.status).to.be.equal(201);
                     expect(res.body).to.be.a("array");
                     expect(res.body.length).to.be.eql(1);
@@ -133,7 +133,7 @@ describe("Task workflow tests", () => {
                       .get("/api/projects/userId/1234abc")
                       .set({ authtoken: token })
                       .end((err, res) => {
-                        // Attributes a responses should have
+                        // Assert
                         expect(res.status).to.be.equal(200);
                         expect(res.body).to.be.a("array");
                         expect(res.body.length).to.be.eql(1);
@@ -144,7 +144,7 @@ describe("Task workflow tests", () => {
                           .get("/api/tasks/1234abc/false")
                           .set({ authtoken: token })
                           .end((err, res) => {
-                            // Attributes a responses should have
+                            // Assert
                             expect(res.status).to.be.equal(200);
                             expect(res.body).to.be.a("array");
                             expect(res.body.length).to.be.eql(0);
@@ -168,7 +168,7 @@ describe("Task workflow tests", () => {
                               .set({ authtoken: token })
                               .send(task)
                               .end((err, res) => {
-                                // Attributes a responses should have
+                                // Assert
                                 expect(res.status).to.be.equal(201);
                                 expect(res.body).to.be.a("array");
                                 expect(res.body.length).to.be.eql(1);
@@ -203,7 +203,7 @@ describe("Task workflow tests", () => {
                                   .get("/api/tasks/1234abc/false")
                                   .set({ authtoken: token })
                                   .end((err, res) => {
-                                    // Attributes a responses should have
+                                    // Assert
                                     expect(res.status).to.be.equal(200);
                                     expect(res.body).to.be.a("array");
                                     expect(res.body.length).to.be.eql(1);
@@ -228,7 +228,7 @@ describe("Task workflow tests", () => {
       .post("/api/user/login")
       .send(newlyCreatedUser)
       .end((err, res) => {
-        // Attributes a responses should have
+        // Assert
         res.should.have.status(200);
         expect(res.body.error).to.be.equal(null);
         //Setting JWT token for Verification further
@@ -239,7 +239,7 @@ describe("Task workflow tests", () => {
           .request(server)
           .get("/api/projects/userId/1234abc")
           .end((err, res) => {
-            // Attributes a responses should have
+            // Assert
             expect(res.status).to.be.equal(200);
             expect(res.body).to.be.a("array");
             expect(res.body.length).to.be.eql(1);
@@ -251,7 +251,7 @@ describe("Task workflow tests", () => {
               .get("/api/tasks/1234abc/false")
               .set({ authtoken: token })
               .end((err, res) => {
-                // Attributes a responses should have
+                // Assert
                 expect(res.status).to.be.equal(200);
                 expect(res.body).to.be.a("array");
                 expect(res.body.length).to.be.eql(1);
@@ -275,7 +275,7 @@ describe("Task workflow tests", () => {
                   .set({ authtoken: token })
                   .send(task2)
                   .end((err, res) => {
-                    // Attributes a responses should have
+                    // Assert
                     expect(res.status).to.be.equal(201);
                     expect(res.body).to.be.a("array");
                     expect(res.body.length).to.be.eql(1);
@@ -302,7 +302,7 @@ describe("Task workflow tests", () => {
                       .get("/api/tasks/1234abc/false")
                       .set({ authtoken: token })
                       .end((err, res) => {
-                        // Attributes a responses should have
+                        // Assert
                         expect(res.status).to.be.equal(200);
                         expect(res.body).to.be.a("array");
                         expect(res.body.length).to.be.eql(2);
@@ -326,7 +326,7 @@ describe("Task workflow tests", () => {
                           .set({ authtoken: token })
                           .send(updateTask2)
                           .end((err, res) => {
-                            // Attributes a responses should have
+                            // Assert
                             expect(res.status).to.be.equal(200);
                             const actualVal = res.body.message;
                             expect(actualVal).to.be.equal(
@@ -339,7 +339,7 @@ describe("Task workflow tests", () => {
                               .get("/api/tasks/1234abc/false")
                               .set({ authtoken: token })
                               .end((err, res) => {
-                                // Attributes a responses should have
+                                // Assert
                                 expect(res.status).to.be.equal(200);
                                 expect(res.body).to.be.a("array");
                                 expect(res.body.length).to.be.eql(2);
@@ -366,7 +366,7 @@ it("register + login the user, create a task in the db under next_7 with todays 
     .post("/api/user/register")
     .send(user)
     .end((err, res) => {
-      // Attributes a responses should have
+      // Assert
       res.should.have.status(200);
       res.body.should.be.a("object");
       expect(res.body.error).to.be.equal(null);
@@ -381,7 +381,7 @@ it("register + login the user, create a task in the db under next_7 with todays 
         .post("/api/user/login")
         .send(newlyCreatedUser)
         .end((err, res) => {
-          // Attributes a responses should have
+          // Assert
           res.should.have.status(200);
           expect(res.body.error).to.be.equal(null);
           //Setting JWT token for Verification further
@@ -393,7 +393,7 @@ it("register + login the user, create a task in the db under next_7 with todays 
             .get("/api/tasks/cccccc/false")
             .set({ authtoken: token })
             .end((err, res) => {
-              // Attributes a responses should have
+              // Assert
               expect(res.status).to.be.equal(200);
               expect(res.body).to.be.a("array");
               expect(res.body.length).to.be.eql(0);
@@ -417,7 +417,7 @@ it("register + login the user, create a task in the db under next_7 with todays 
                 .set({ authtoken: token })
                 .send(task3)
                 .end((err, res) => {
-                  // Attributes a responses should have
+                  // Assert
                   expect(res.status).to.be.equal(201);
                   expect(res.body).to.be.a("array");
                   expect(res.body.length).to.be.eql(1);
@@ -444,7 +444,7 @@ it("register + login the user, create a task in the db under next_7 with todays 
                     .get("/api/nextweek/nextSeven/cccccc/false")
                     .set({ authtoken: token })
                     .end((err, res) => {
-                      // Attributes a responses should have
+                      // Assert
                       expect(res.status).to.be.equal(200);
                       expect(res.body).to.be.a("array");
                       expect(res.body.length).to.be.eql(1);
@@ -468,7 +468,7 @@ it("register + login the user, create a task in the db under next_7 with todays 
                         .set({ authtoken: token })
                         .send(updateTask3)
                         .end((err, res) => {
-                          // Attributes a responses should have
+                          // Assert
                           expect(res.status).to.be.equal(200);
                           const actualVal = res.body.message;
                           expect(actualVal).to.be.equal(
@@ -481,7 +481,7 @@ it("register + login the user, create a task in the db under next_7 with todays 
                             .get("/api/tasks/cccccc/false")
                             .set({ authtoken: token })
                             .end((err, res) => {
-                              // Attributes a responses should have
+                              // Assert
                               expect(res.status).to.be.equal(200);
                               expect(res.body).to.be.a("array");
                               expect(res.body.length).to.be.eql(0);

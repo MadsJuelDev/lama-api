@@ -55,7 +55,7 @@ describe("Task error workflow tests", () => {
       .post("/api/user/register")
       .send(user)
       .end((err, res) => {
-        // Attributes a responses should have
+        // Asserts
         res.should.have.status(200);
         res.body.should.be.a("object");
         expect(res.body.error).to.be.equal(null);
@@ -70,18 +70,18 @@ describe("Task error workflow tests", () => {
           .post("/api/user/login")
           .send(newlyCreatedUser)
           .end((err, res) => {
-            // Attributes a responses should have
+            // Assert
             res.should.have.status(200);
             expect(res.body.error).to.be.equal(null);
             //Setting JWT token for Verification further
             let token = res.body.data.token;
 
-            // 3) Verify No projects in test DB
+            // 3) Verify no projects in test DB
             chai
               .request(server)
               .get("/api/projects/userId/bbbbbb")
               .end((err, res) => {
-                // Attributes a responses should have
+                // Asserts
                 expect(res.status).to.be.equal(200);
                 expect(res.body).to.be.a("array");
                 expect(res.body.length).to.be.eql(0);
@@ -103,7 +103,7 @@ describe("Task error workflow tests", () => {
                   .set({ authtoken: token })
                   .send(project)
                   .end((err, res) => {
-                    // Attributes a responses should have
+                    // Asserts
                     expect(res.status).to.be.equal(201);
                     expect(res.body).to.be.a("array");
                     expect(res.body.length).to.be.eql(1);
@@ -133,7 +133,7 @@ describe("Task error workflow tests", () => {
                       .get("/api/projects/userId/bbbbbb")
                       .set({ authtoken: token })
                       .end((err, res) => {
-                        // Attributes a responses should have
+                        // Asserts
                         expect(res.status).to.be.equal(200);
                         expect(res.body).to.be.a("array");
                         expect(res.body.length).to.be.eql(1);
@@ -144,7 +144,7 @@ describe("Task error workflow tests", () => {
                           .get("/api/tasks/bbbbbb/false")
                           .set({ authtoken: token })
                           .end((err, res) => {
-                            // Attributes a responses should have
+                            // Asserts
                             expect(res.status).to.be.equal(200);
                             expect(res.body).to.be.a("array");
                             expect(res.body.length).to.be.eql(0);
@@ -168,18 +168,18 @@ describe("Task error workflow tests", () => {
                               .set({ authtoken: token })
                               .send(task)
                               .end((err, res) => {
-                                // Attributes a responses should have
+                                //  Asserts
                                 expect(res.status).to.be.equal(500);
                                 res.body.should.be.a("object");
                                 expect(res.body.message).to.not.equal(null);
 
-                                // 8) Verify zero task added to the test DB
+                                // 8) Verify zero task in the test DB
                                 chai
                                   .request(server)
                                   .get("/api/tasks/bbbbbb/false")
                                   .set({ authtoken: token })
                                   .end((err, res) => {
-                                    // Attributes a responses should have
+                                    // Assert
                                     expect(res.status).to.be.equal(200);
                                     expect(res.body).to.be.a("array");
                                     expect(res.body.length).to.be.eql(0);
@@ -195,8 +195,8 @@ describe("Task error workflow tests", () => {
   });
   it("login the user, verify 1 projects in DB, verify 1 tasks in db, create a task in the db under the project, fail to update it, and verify 2 task in db", (done) => {
     let newlyCreatedUser = {
-      username: "1234abc",
-      password: "1234abc",
+      username: "bbbbbb",
+      password: "bbbbbb",
     };
     // 1) Login the user
     chai
@@ -204,18 +204,18 @@ describe("Task error workflow tests", () => {
       .post("/api/user/login")
       .send(newlyCreatedUser)
       .end((err, res) => {
-        // Attributes a responses should have
+        // Assert
         res.should.have.status(200);
         expect(res.body.error).to.be.equal(null);
         //Setting JWT token for Verification further
         let token = res.body.data.token;
 
-        // 2) Verify 1 existing projects in test DB
+        // 2) Verify one existing projects in test DB
         chai
           .request(server)
-          .get("/api/projects/userId/1234abc")
+          .get("/api/projects/userId/bbbbbb")
           .end((err, res) => {
-            // Attributes a responses should have
+            // Assert
             expect(res.status).to.be.equal(200);
             expect(res.body).to.be.a("array");
             expect(res.body.length).to.be.eql(1);
@@ -224,10 +224,10 @@ describe("Task error workflow tests", () => {
 
             chai
               .request(server)
-              .get("/api/tasks/1234abc/false")
+              .get("/api/tasks/bbbbbb/false")
               .set({ authtoken: token })
               .end((err, res) => {
-                // Attributes a responses should have
+                // Assert
                 expect(res.status).to.be.equal(200);
                 expect(res.body).to.be.a("array");
                 expect(res.body.length).to.be.eql(0);
@@ -242,7 +242,7 @@ describe("Task error workflow tests", () => {
                   status: "To Do",
                   projectId: "IAmAUniqueId2",
                   task: "test2",
-                  userId: "1234abc",
+                  userId: "bbbbbb",
                 };
 
                 chai
@@ -251,7 +251,7 @@ describe("Task error workflow tests", () => {
                   .set({ authtoken: token })
                   .send(task2)
                   .end((err, res) => {
-                    // Attributes a responses should have
+                    // Assert
                     expect(res.status).to.be.equal(201);
                     expect(res.body).to.be.a("array");
                     expect(res.body.length).to.be.eql(1);
@@ -271,19 +271,19 @@ describe("Task error workflow tests", () => {
                     expect(createdTask.task).to.be.equal(task2.task);
                     expect(createdTask.userId).to.be.equal(task2.userId);
 
-                    // 5) Verify 2 existing task in test DB
+                    // 5) Verify one existing task in test DB
 
                     chai
                       .request(server)
-                      .get("/api/tasks/1234abc/false")
+                      .get("/api/tasks/bbbbbb/false")
                       .set({ authtoken: token })
                       .end((err, res) => {
-                        // Attributes a responses should have
+                        // Assert
                         expect(res.status).to.be.equal(200);
                         expect(res.body).to.be.a("array");
                         expect(res.body.length).to.be.eql(1);
 
-                        // 6) update the task
+                        // 6) Attempt to update the task with no task name
                         let updateTask2 = {
                           archived: false,
                           isCollapsed: true,
@@ -293,7 +293,7 @@ describe("Task error workflow tests", () => {
                           status: "Doing",
                           projectId: "IAmAUniqueId2",
                           task: "",
-                          userId: "1234abc",
+                          userId: "bbbbbb",
                         };
 
                         chai
@@ -302,22 +302,20 @@ describe("Task error workflow tests", () => {
                           .set({ authtoken: token })
                           .send(updateTask2)
                           .end((err, res) => {
-                            // Attributes a responses should have
-                            expect(res.status).to.be.equal(404);
+                            // Assert
+                            expect(res.status).to.be.equal(400);
                             const actualVal = res.body.message;
                             expect(actualVal).to.be.equal(
-                              "Cannot update Tasks with id=" +
-                                createdTask._id +
-                                ". Maybe Tasks was not found?"
+                              "Failed to validate request"
                             );
 
-                            // 7) Verify two tasks added to the test DB
+                            // 7) Verify only one tasks is in the test DB
                             chai
                               .request(server)
-                              .get("/api/tasks/1234abc/false")
+                              .get("/api/tasks/bbbbbb/false")
                               .set({ authtoken: token })
                               .end((err, res) => {
-                                // Attributes a responses should have
+                                // Assert
                                 expect(res.status).to.be.equal(200);
                                 expect(res.body).to.be.a("array");
                                 expect(res.body.length).to.be.eql(1);
@@ -330,145 +328,4 @@ describe("Task error workflow tests", () => {
           });
       });
   });
-});
-
-it("register + login the user, create a task in the db under next_7 with todays date + 7 days as date, verify it, and archive it (put)", (done) => {
-  // 1) Register a new LaMa user
-  let user = {
-    username: "aaaaaa",
-    email: "aaa@aaa.dk",
-    password: "aaaaaa",
-  };
-  chai
-    .request(server)
-    .post("/api/user/register")
-    .send(user)
-    .end((err, res) => {
-      // Attributes a responses should have
-      res.should.have.status(200);
-      res.body.should.be.a("object");
-      expect(res.body.error).to.be.equal(null);
-
-      let newlyCreatedUser = {
-        username: "aaaaaa",
-        password: "aaaaaa",
-      };
-      // 2) Login the user
-      chai
-        .request(server)
-        .post("/api/user/login")
-        .send(newlyCreatedUser)
-        .end((err, res) => {
-          // Attributes a responses should have
-          res.should.have.status(200);
-          expect(res.body.error).to.be.equal(null);
-          //Setting JWT token for Verification further
-          let token = res.body.data.token;
-
-          // 2) Verify 0 tasks in the test DB
-          chai
-            .request(server)
-            .get("/api/tasks/aaaaaa/false")
-            .set({ authtoken: token })
-            .end((err, res) => {
-              // Attributes a responses should have
-              expect(res.status).to.be.equal(200);
-              expect(res.body).to.be.a("array");
-              expect(res.body.length).to.be.eql(0);
-
-              // 3) Create a task under next_7 with 4 days remaining
-              let task3 = {
-                archived: false,
-                isCollapsed: true,
-                date: `${dateFour}`,
-                description: "",
-                urgency: "",
-                status: "To Do",
-                projectId: "NEXT_7",
-                task: "test3",
-                userId: "aaaaaa",
-              };
-
-              chai
-                .request(server)
-                .post("/api/tasks/")
-                .set({ authtoken: token })
-                .send(task3)
-                .end((err, res) => {
-                  // Attributes a responses should have
-                  expect(res.status).to.be.equal(201);
-                  expect(res.body).to.be.a("array");
-                  expect(res.body.length).to.be.eql(1);
-
-                  let createdTask = res.body[0];
-                  expect(createdTask.archived).to.be.equal(task3.archived);
-                  expect(createdTask.isCollapsed).to.be.equal(
-                    task3.isCollapsed
-                  );
-                  expect(createdTask.date).to.be.equal(task3.date);
-                  expect(createdTask.description).to.be.equal(
-                    task3.description
-                  );
-                  expect(createdTask.urgency).to.be.equal(task3.urgency);
-                  expect(createdTask.status).to.be.equal(task3.status);
-                  expect(createdTask.projectId).to.be.equal(task3.projectId);
-                  expect(createdTask.task).to.be.equal(task3.task);
-                  expect(createdTask.userId).to.be.equal(task3.userId);
-
-                  // 4) Verify 1 task in test DB
-
-                  chai
-                    .request(server)
-                    .get("/api/nextweek/nextSeven/aaaaaa/false")
-                    .set({ authtoken: token })
-                    .end((err, res) => {
-                      // Attributes a responses should have
-                      expect(res.status).to.be.equal(200);
-                      expect(res.body).to.be.a("array");
-                      expect(res.body.length).to.be.eql(1);
-
-                      // 5) update the task
-                      let updateTask3 = {
-                        archived: true,
-                        isCollapsed: true,
-                        date: `${dateFour}`,
-                        description: "",
-                        urgency: "",
-                        status: "To Do",
-                        projectId: "NEXT_7",
-                        task: "test3",
-                        userId: "aaaaaa",
-                      };
-
-                      chai
-                        .request(server)
-                        .put("/api/tasks/" + createdTask._id)
-                        .set({ authtoken: token })
-                        .send(updateTask3)
-                        .end((err, res) => {
-                          // Attributes a responses should have
-                          expect(res.status).to.be.equal(200);
-                          const actualVal = res.body.message;
-                          expect(actualVal).to.be.equal(
-                            "Tasks was succesfully updated!"
-                          );
-
-                          // 6) Verify only two tasks in the test DB
-                          chai
-                            .request(server)
-                            .get("/api/tasks/aaaaaa/false")
-                            .set({ authtoken: token })
-                            .end((err, res) => {
-                              // Attributes a responses should have
-                              expect(res.status).to.be.equal(200);
-                              expect(res.body).to.be.a("array");
-                              expect(res.body.length).to.be.eql(0);
-                              done();
-                            });
-                        });
-                    });
-                });
-            });
-        });
-    });
 });

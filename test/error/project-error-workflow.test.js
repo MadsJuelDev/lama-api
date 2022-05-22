@@ -33,7 +33,7 @@ describe("Project workflow tests", () => {
       .post("/api/user/register")
       .send(user)
       .end((err, res) => {
-        // Attributes a responses should have
+        // Assert
         res.should.have.status(200);
         res.body.should.be.a("object");
         expect(res.body.error).to.be.equal(null);
@@ -48,7 +48,7 @@ describe("Project workflow tests", () => {
           .post("/api/user/login")
           .send(newlyCreatedUser)
           .end((err, res) => {
-            // Attributes a responses should have
+            // Assert
             res.should.have.status(200);
             expect(res.body.error).to.be.equal(null);
             //Setting JWT token for Verification further
@@ -59,7 +59,7 @@ describe("Project workflow tests", () => {
               .request(server)
               .get("/api/projects/userId/abc1234")
               .end((err, res) => {
-                // Attributes a responses should have
+                // Assert
                 expect(res.status).to.be.equal(200);
                 expect(res.body).to.be.a("array");
                 expect(res.body.length).to.be.eql(0);
@@ -81,7 +81,7 @@ describe("Project workflow tests", () => {
                   .set({ authtoken: token })
                   .send(project)
                   .end((err, res) => {
-                    // Attributes a responses should have
+                    // Assert
                     expect(res.status).to.be.equal(403);
                     expect(res.body).to.be.a("object");
                     expect(res.body.error).to.be.equal("Project needs a name!");
@@ -90,7 +90,7 @@ describe("Project workflow tests", () => {
                       .request(server)
                       .get("/api/projects/userId/abc1234")
                       .end((err, res) => {
-                        // Attributes a responses should have
+                        // Assert
                         expect(res.status).to.be.equal(200);
                         expect(res.body).to.be.a("array");
                         expect(res.body.length).to.be.eql(0);
@@ -115,7 +115,7 @@ describe("Project workflow tests", () => {
       .post("/api/user/register")
       .send(user)
       .end((err, res) => {
-        // Attributes a responses should have
+        // Assert
         res.should.have.status(200);
         res.body.should.be.a("object");
         expect(res.body.error).to.be.equal(null);
@@ -130,7 +130,7 @@ describe("Project workflow tests", () => {
           .post("/api/user/login")
           .send(newlyCreatedUser)
           .end((err, res) => {
-            // Attributes a responses should have
+            // Assert
             res.should.have.status(200);
             expect(res.body.error).to.be.equal(null);
             //Setting JWT token for Verification further
@@ -141,7 +141,7 @@ describe("Project workflow tests", () => {
               .request(server)
               .get("/api/projects/userId/1234abc")
               .end((err, res) => {
-                // Attributes a responses should have
+                // Assert
                 expect(res.status).to.be.equal(200);
                 expect(res.body).to.be.a("array");
                 expect(res.body.length).to.be.eql(0);
@@ -163,7 +163,7 @@ describe("Project workflow tests", () => {
                   .set({ authtoken: token })
                   .send(project)
                   .end((err, res) => {
-                    // Attributes a responses should have
+                    // Assert
                     expect(res.status).to.be.equal(201);
                     expect(res.body).to.be.a("array");
                     expect(res.body.length).to.be.eql(1);
@@ -192,7 +192,7 @@ describe("Project workflow tests", () => {
                       .request(server)
                       .get("/api/projects/userId/1234abc")
                       .end((err, res) => {
-                        // Attributes a responses should have
+                        // Assert
                         expect(res.status).to.be.equal(200);
                         expect(res.body).to.be.a("array");
                         expect(res.body.length).to.be.eql(1);
@@ -214,7 +214,7 @@ describe("Project workflow tests", () => {
                           .set({ authtoken: token })
                           .send(projectTwo)
                           .end((err, res) => {
-                            // Attributes a responses should have
+                            // Assert
                             expect(res.status).to.be.equal(403);
                             expect(res.body).to.be.a("object");
                             expect(res.body.error).to.be.equal(
@@ -226,7 +226,7 @@ describe("Project workflow tests", () => {
                               .request(server)
                               .get("/api/projects/userId/1234abc")
                               .end((err, res) => {
-                                // Attributes a responses should have
+                                // Assert
                                 expect(res.status).to.be.equal(200);
                                 expect(res.body).to.be.a("array");
                                 expect(res.body.length).to.be.eql(1);
@@ -260,7 +260,7 @@ describe("Project workflow tests", () => {
   //       .post("/api/user/register")
   //       .send(user1, user2)
   //       .end((err, res) => {
-  //         // Attributes a responses should have
+  //         // Assert
   //         res.should.have.status(200);
   //         res.body.should.be.a("object");
   //         expect(res.body.error).to.be.equal(null);
@@ -275,7 +275,7 @@ describe("Project workflow tests", () => {
   //           .post("/api/user/login")
   //           .send(newlyCreatedUser)
   //           .end((err, res) => {
-  //             // Attributes a responses should have
+  //             // Assert
   //             res.should.have.status(200);
   //             expect(res.body.error).to.be.equal(null);
   //             //Setting JWT token for Verification further
@@ -286,7 +286,7 @@ describe("Project workflow tests", () => {
   //               .request(server)
   //               .get("/api/projects/userId/1234abcd")
   //               .end((err, res) => {
-  //                 // Attributes a responses should have
+  //                 // Assert
   //                 expect(res.status).to.be.equal(200);
   //                 expect(res.body).to.be.a("array");
   //                 expect(res.body.length).to.be.eql(0);
@@ -308,7 +308,7 @@ describe("Project workflow tests", () => {
   //                   .set({ authtoken: token })
   //                   .send(project)
   //                   .end((err, res) => {
-  //                     // Attributes a responses should have
+  //                     // Assert
   //                     expect(res.status).to.be.equal(201);
   //                     expect(res.body).to.be.a("array");
   //                     expect(res.body.length).to.be.eql(1);
@@ -337,7 +337,7 @@ describe("Project workflow tests", () => {
   //                       .request(server)
   //                       .get("/api/projects/userId/1234abcd")
   //                       .end((err, res) => {
-  //                         // Attributes a responses should have
+  //                         // Assert
   //                         expect(res.status).to.be.equal(200);
   //                         expect(res.body).to.be.a("array");
   //                         expect(res.body.length).to.be.eql(1);
@@ -375,7 +375,7 @@ describe("Project workflow tests", () => {
   //                                 authtoken: token,
   //                               })
   //                               .end((err, res) => {
-  //                                 // Attributes a responses should have
+  //                                 // Assert
   //                                 expect(res.status).to.be.equal(200);
   //                                 expect(res.body).to.be.a("array");
   //                                 expect(res.body.length).to.be.eql(1);
