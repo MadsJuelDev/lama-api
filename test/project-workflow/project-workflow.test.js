@@ -247,4 +247,151 @@ describe("Project workflow tests", () => {
           });
       });
   });
+
+  // update/add a collaborator to the list
+  it("should register + login a user, create project and update/add a collaborator", (done) => {
+    // 1) Register a new LaMa user
+    let user1 = {
+      username: "1234abcd",
+      email: "1234@abcd.dk",
+      password: "1234abcd",
+    };
+    let user2 = {
+      username: "12345abc",
+      email: "12345@abc.dk",
+      password: "12345abc",
+    };
+    chai
+      .request(server)
+      .post("/api/user/register")
+      .send(user1, user2)
+      .end((err, res) => {
+        // Attributes a responses should have
+        res.should.have.status(200);
+        res.body.should.be.a("object");
+        expect(res.body.error).to.be.equal(null);
+
+        let newlyCreatedUser = {
+          username: "1234abcd",
+          password: "1234abcd",
+        };
+        // 2) Login the user
+        chai
+          .request(server)
+          .post("/api/user/login")
+          .send(newlyCreatedUser)
+          .end((err, res) => {
+            // Attributes a responses should have
+            res.should.have.status(200);
+            expect(res.body.error).to.be.equal(null);
+            //Setting JWT token for Verification further
+            let token = res.body.data.token;
+
+            // 3) Verify No projects in test DB
+            chai
+              .request(server)
+              .get("/api/projects/userId/1234abcd")
+              .end((err, res) => {
+                // Attributes a responses should have
+                expect(res.status).to.be.equal(200);
+                expect(res.body).to.be.a("array");
+                expect(res.body.length).to.be.eql(0);
+
+                // 4) Create new Project
+                let project = {
+                  name: "Todo LaMa App 3",
+                  projectId: "IAmAUniqueId3",
+                  userId: "1234abcd",
+                  collabIdOne: "",
+                  collabIdTwo: "",
+                  collabIdThree: "",
+                  collabIdFour: "",
+                };
+
+                chai
+                  .request(server)
+                  .post("/api/projects/")
+                  .set({ authtoken: token })
+                  .send(project)
+                  .end((err, res) => {
+                    // Attributes a responses should have
+                    expect(res.status).to.be.equal(201);
+                    expect(res.body).to.be.a("array");
+                    expect(res.body.length).to.be.eql(1);
+
+                    let savedProject = res.body[0];
+                    expect(savedProject.name).to.be.equal(project.name);
+                    expect(savedProject.projectId).to.be.equal(
+                      project.projectId
+                    );
+                    expect(savedProject.userId).to.be.equal(project.userId);
+                    expect(savedProject.collabIdOne).to.be.equal(
+                      project.collabIdOne
+                    );
+                    expect(savedProject.collabIdTwo).to.be.equal(
+                      project.collabIdTwo
+                    );
+                    expect(savedProject.collabIdThree).to.be.equal(
+                      project.collabIdThree
+                    );
+                    expect(savedProject.collabIdFour).to.be.equal(
+                      project.collabIdFour
+                    );
+
+                    // 5) Verify one project added to the test DB
+                    chai
+                      .request(server)
+                      .get("/api/projects/userId/1234abcd")
+                      .end((err, res) => {
+                        // Attributes a responses should have
+                        expect(res.status).to.be.equal(200);
+                        expect(res.body).to.be.a("array");
+                        expect(res.body.length).to.be.eql(1);
+
+                        // 6) update the project with a collaborator
+                        let updateProject = {
+                          name: "Todo LaMa App 3",
+                          projectId: "IAmAUniqueId3",
+                          userId: "1234abcd",
+                          collabIdOne: "12345abc",
+                          collabIdTwo: "",
+                          collabIdThree: "",
+                          collabIdFour: "",
+                        };
+                        chai
+                          .request(server)
+                          .put("/api/projects/" + savedProject._id)
+                          .set({
+                            authtoken: token,
+                          })
+                          .send(updateProject)
+                          .end((err, res) => {
+                            // Asserts
+                            expect(res.status).to.be.equal(200);
+                            const actualVal = res.body.message;
+                            expect(actualVal).to.be.equal(
+                              "Project was succesfully updated!"
+                            );
+
+                            // 7) Verify project was updated in test DB
+                            chai
+                              .request(server)
+                              .get("/api/projects/all/12345abc")
+                              .set({
+                                authtoken: token,
+                              })
+                              .end((err, res) => {
+                                // Attributes a responses should have
+                                expect(res.status).to.be.equal(200);
+                                expect(res.body).to.be.a("array");
+                                expect(res.body.length).to.be.eql(1);
+                                done();
+                              });
+                          });
+                      });
+                  });
+              });
+          });
+      });
+  });
 });

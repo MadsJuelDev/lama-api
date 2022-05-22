@@ -19,6 +19,14 @@ const loginValidation = (data) => {
   return schema.validate(data);
 };
 
+//validating login
+const taskValidation = (data) => {
+  const schema = Joi.object({
+    task: Joi.string().min(1).max(255).required(),
+  });
+  return schema.validate(data);
+};
+
 //logic to verify token (JWT)
 const validateToken = (req, res, next) => {
   const token = req.header("authtoken");

@@ -21,7 +21,7 @@ router.post("/", validateToken, async (req, res) => {
       res.status(201).send(data);
     })
     .catch((err) => {
-      res.status(500).send({ message: err.message });
+      return res.status(403).send({ error: "Project needs a name!" });
     });
 });
 
