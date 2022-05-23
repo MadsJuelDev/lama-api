@@ -249,6 +249,50 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Projects"
+    
+    put:
+      summary: Updates a specific project object
+      description: Updates a specific project object based on its id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id
+          schema:
+            type: string
+            
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Projects"
+      responses:
+        201:
+          description: Project object updated succesfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Projects"
+
+    delete:
+      summary: Deletes a specific Project object
+      description: Deletes a specific Project object based on its id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id
+          schema:
+            type: string
+
+      responses:
+        201:
+          description: Project object deleted succesfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Projects"
 
   /Tasks/{userId}/{archived}/{projectId}:
     get:
@@ -372,48 +416,6 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Tasks"
-
-  /Projects/{id}:
-    put:
-      summary: Updates a specific project object
-      description: Updates a specific project object based on its id
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: MongoDB id
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Projects"
-      responses:
-        201:
-          description: Project object updated succesfully
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Projects"
-    delete:
-      summary: Deletes a specific Project object
-      description: Deletes a specific Project object based on its id
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: MongoDB id
-          schema:
-            type: string
-      responses:
-        201:
-          description: Project object deleted succesfully
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Projects"
 
   /Tasks/{id}:
     put:
