@@ -4,6 +4,7 @@ const {
   validateToken,
   taskMoveValidation,
   taskArchiveValidation,
+  taskCollapseValidation,
 } = require("../validation");
 const { taskValidation } = require("../validation");
 
@@ -134,6 +135,34 @@ router.put("/archive/:id", validateToken, async (req, res) => {
 router.put("/move/:id", validateToken, async (req, res) => {
   const id = req.params.id;
   const { error } = taskMoveValidation(req.body);
+  if (error) {
+    return res.status(400).json({
+      message: "Failed to validate request",
+    });
+  }
+
+  await Tasks.findByIdAndUpdate(id, req.body)
+    .then((data) => {
+      if (!data) {
+        res.status(404).send({
+          message:
+            "Cannot update Tasks with id=" +
+            id +
+            ". Maybe Tasks was not found?",
+        });
+      } else {
+        res.send({ message: "Tasks was succesfully updated!" });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({ message: "Error updating Tasks with id=" + id });
+    });
+});
+
+// Update isCollapsed Task - put
+router.put("/collapse/:id", validateToken, async (req, res) => {
+  const id = req.params.id;
+  const { error } = taskCollapseValidation(req.body);
   if (error) {
     return res.status(400).json({
       message: "Failed to validate request",

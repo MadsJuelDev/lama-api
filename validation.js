@@ -48,6 +48,14 @@ const taskArchiveValidation = (data) => {
   return schema.validate(data);
 };
 
+//archive task validation
+const taskCollapseValidation = (data) => {
+  const schema = Joi.object({
+    archived: Joi.boolean(),
+  });
+  return schema.validate(data);
+};
+
 //logic to verify token (JWT)
 const validateToken = (req, res, next) => {
   const token = req.header("authtoken");
@@ -64,6 +72,7 @@ module.exports = {
   taskValidation,
   taskMoveValidation,
   taskArchiveValidation,
+  taskCollapseValidation,
   registerValidation,
   loginValidation,
   validateToken,
