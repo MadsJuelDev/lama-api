@@ -320,7 +320,7 @@ describe("Full workflow test", () => {
                                                     );
                                                     expect(
                                                       res.body.length
-                                                    ).to.be.eql(1);
+                                                    ).to.be.eql(2);
 
                                                     done();
                                                   });
