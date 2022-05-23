@@ -399,6 +399,25 @@ paths:
               schema:
                 $ref: "#/components/schemas/Projects"
 
+    delete:
+      summary: Deletes a specific Project object
+      description: Deletes a specific Project object based on its id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id
+          schema:
+            type: string
+
+      responses:
+        201:
+          description: Project object deleted succesfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Projects"
+
   /Tasks/{id}:
     put:
       summary: Updates a specific Task object
