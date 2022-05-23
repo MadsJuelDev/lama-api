@@ -208,22 +208,14 @@ describe("Full workflow test", () => {
                                     expect(res.body).to.be.a("array");
                                     expect(res.body.length).to.be.eql(1);
 
-                                    // 9) update the task
+                                    // 9) update the task status
                                     let updateTask2 = {
-                                      archived: false,
-                                      isCollapsed: true,
-                                      date: "",
-                                      description: "",
-                                      urgency: "medium",
                                       status: "Doing",
-                                      projectId: "IAmAUniqueId2",
-                                      task: "test",
-                                      userId: "eeeeee",
                                     };
 
                                     chai
                                       .request(server)
-                                      .put("/api/tasks/" + createdTask._id)
+                                      .put("/api/tasks/move/" + createdTask._id)
                                       .set({ authtoken: token })
                                       .send(updateTask2)
                                       .end((err, res) => {
