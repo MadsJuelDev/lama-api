@@ -22,7 +22,7 @@ let dateSeven = moment(seven).format("DD/MM/YYYY");
 
 // ***** CRUD operations ***** //
 
-//Read tasks for Today
+//Read tasks for Today - get
 router.get("/today/:userId/:archived/", validateToken, async (req, res) => {
   await Tasks.find({
     userId: req.params.userId,
@@ -38,7 +38,7 @@ router.get("/today/:userId/:archived/", validateToken, async (req, res) => {
     });
 });
 
-//Read all next weeks worth of tasks- get
+//Read all next weeks worth of tasks - get
 router.get("/nextSeven/:userId/:archived/", validateToken, async (req, res) => {
   await Tasks.find({
     userId: req.params.userId,

@@ -234,7 +234,7 @@ describe("Task workflow tests", () => {
         //Setting JWT token for Verification further
         let token = res.body.data.token;
 
-        // 2) Verify 1 existing projects in test DB
+        // 2) Verify 1 existing project in test DB
         chai
           .request(server)
           .get("/api/projects/userId/1234abc")
@@ -295,7 +295,7 @@ describe("Task workflow tests", () => {
                     expect(createdTask.task).to.be.equal(task2.task);
                     expect(createdTask.userId).to.be.equal(task2.userId);
 
-                    // 5) Verify 2 existing task in test DB
+                    // 5) Verify 2 existing tasks in test DB
 
                     chai
                       .request(server)
@@ -307,7 +307,7 @@ describe("Task workflow tests", () => {
                         expect(res.body).to.be.a("array");
                         expect(res.body.length).to.be.eql(2);
 
-                        // 6) update the task
+                        // 6) update a specific task
                         let updateTask2 = {
                           archived: false,
                           isCollapsed: true,
@@ -354,7 +354,7 @@ describe("Task workflow tests", () => {
   });
 });
 
-it("register + login the user, create a task in the db under next_7 with todays date + 7 days as date, verify it, and archive it (put)", (done) => {
+it("register + login the user, create a task in the db under next_7 with todays date + 4 days as date, verify it, and archive it (put)", (done) => {
   // 1) Register a new LaMa user
   let user = {
     username: "cccccc",
@@ -387,7 +387,7 @@ it("register + login the user, create a task in the db under next_7 with todays 
           //Setting JWT token for Verification further
           let token = res.body.data.token;
 
-          // 2) Verify 0 tasks in the test DB
+          // 3) Verify 0 tasks in the test DB
           chai
             .request(server)
             .get("/api/tasks/cccccc/false")
@@ -398,7 +398,7 @@ it("register + login the user, create a task in the db under next_7 with todays 
               expect(res.body).to.be.a("array");
               expect(res.body.length).to.be.eql(0);
 
-              // 3) Create a task under next_7 with 4 days remaining
+              // 4) Create a task under next_7 with 4 days remaining
               let task3 = {
                 archived: false,
                 isCollapsed: true,
@@ -437,7 +437,7 @@ it("register + login the user, create a task in the db under next_7 with todays 
                   expect(createdTask.task).to.be.equal(task3.task);
                   expect(createdTask.userId).to.be.equal(task3.userId);
 
-                  // 4) Verify 1 task in test DB
+                  // 5) Verify 1 task in test DB
 
                   chai
                     .request(server)
@@ -449,7 +449,7 @@ it("register + login the user, create a task in the db under next_7 with todays 
                       expect(res.body).to.be.a("array");
                       expect(res.body.length).to.be.eql(1);
 
-                      // 5) update the task
+                      // 6) update the task
                       let updateTask3 = {
                         archived: true,
                         isCollapsed: true,
@@ -475,7 +475,7 @@ it("register + login the user, create a task in the db under next_7 with todays 
                             "Tasks was succesfully updated!"
                           );
 
-                          // 6) Verify only two tasks in the test DB
+                          // 7) Verify only two tasks in the test DB
                           chai
                             .request(server)
                             .get("/api/tasks/cccccc/false")

@@ -1,13 +1,10 @@
 const router = require("express").Router();
 const Projects = require("../models/Projects");
-const NodeCache = require("node-cache");
 const { validateToken } = require("../validation");
 
-// stdTTL = standard time to live
-const cache = new NodeCache({ stdTTL: 600 });
-
 // ***** CRUD operations ***** //
-// Create Projects - post
+
+// Create a Project - post
 router.post("/", validateToken, async (req, res) => {
   const projectExist = await Projects.findOne({ name: req.body.name });
   if (projectExist) {
@@ -17,7 +14,6 @@ router.post("/", validateToken, async (req, res) => {
   data = req.body;
   Projects.insertMany(data)
     .then((data) => {
-      cache.flushAll();
       res.status(201).send(data);
     })
     .catch((err) => {
@@ -62,7 +58,7 @@ router.get("/all/:collabId", validateToken, async (req, res) => {
     });
 });
 
-// Read all user created Projects  - get
+// Read all user created Projects - get
 router.get("/userId/:userId", async (req, res) => {
   await Projects.find({ userId: req.params.userId })
     .then((data) => {
@@ -73,7 +69,7 @@ router.get("/userId/:userId", async (req, res) => {
     });
 });
 
-// Update specific Tasks - put
+// Update a specific Project - put
 router.put("/:id", validateToken, async (req, res) => {
   const id = req.params.id;
   await Projects.findByIdAndUpdate(id, req.body)
@@ -94,7 +90,7 @@ router.put("/:id", validateToken, async (req, res) => {
     });
 });
 
-// Delete specific Projects - delete
+// Delete specific Project - delete
 router.delete("/:id", validateToken, (req, res) => {
   const id = req.params.id;
   Projects.findByIdAndDelete(id)
@@ -107,7 +103,6 @@ router.delete("/:id", validateToken, (req, res) => {
             ". Maybe Projects was not found?",
         });
       } else {
-        cache.flushAll();
         res.send({ message: "Projects was succesfully deleted!" });
       }
     })

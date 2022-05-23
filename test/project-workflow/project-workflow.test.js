@@ -247,10 +247,8 @@ describe("Project workflow tests", () => {
           });
       });
   });
-
-  // update/add a collaborator to the list
   it("should register + login a user, create project and update/add a collaborator", (done) => {
-    // 1) Register a new LaMa user
+    // 1) Register two new LaMa users
     let user1 = {
       username: "1234abcd",
       email: "1234@abcd.dk",
@@ -373,7 +371,7 @@ describe("Project workflow tests", () => {
                               "Project was succesfully updated!"
                             );
 
-                            // 7) Verify project was updated in test DB
+                            // 7) Verify project was updated with CollabId in test DB
                             chai
                               .request(server)
                               .get("/api/projects/all/12345abc")

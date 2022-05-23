@@ -149,7 +149,7 @@ describe("Task error workflow tests", () => {
                             expect(res.body).to.be.a("array");
                             expect(res.body.length).to.be.eql(0);
 
-                            // 7) Attempt to create a task
+                            // 7) Attempt to create a task without the required name and expect an error 500
                             let task = {
                               archived: false,
                               isCollapsed: true,
@@ -173,7 +173,7 @@ describe("Task error workflow tests", () => {
                                 res.body.should.be.a("object");
                                 expect(res.body.message).to.not.equal(null);
 
-                                // 8) Verify zero task in the test DB
+                                // 8) Verify no task in the test DB
                                 chai
                                   .request(server)
                                   .get("/api/tasks/bbbbbb/false")
@@ -193,7 +193,7 @@ describe("Task error workflow tests", () => {
           });
       });
   });
-  it("login the user, verify 1 projects in DB, verify 1 tasks in db, create a task in the db under the project, fail to update it, and verify 2 task in db", (done) => {
+  it("login the user, verify 1 projects in DB, verify 1 tasks in db, create a task in the db under the project, fail to update it, and verify 1 task in db", (done) => {
     let newlyCreatedUser = {
       username: "bbbbbb",
       password: "bbbbbb",
@@ -221,7 +221,6 @@ describe("Task error workflow tests", () => {
             expect(res.body.length).to.be.eql(1);
 
             // 3) Verify no existing task in test DB
-
             chai
               .request(server)
               .get("/api/tasks/bbbbbb/false")
@@ -232,7 +231,7 @@ describe("Task error workflow tests", () => {
                 expect(res.body).to.be.a("array");
                 expect(res.body.length).to.be.eql(0);
 
-                // 4) Create a second task
+                // 4) Create a task
                 let task2 = {
                   archived: false,
                   isCollapsed: true,
@@ -272,7 +271,6 @@ describe("Task error workflow tests", () => {
                     expect(createdTask.userId).to.be.equal(task2.userId);
 
                     // 5) Verify one existing task in test DB
-
                     chai
                       .request(server)
                       .get("/api/tasks/bbbbbb/false")
@@ -309,7 +307,7 @@ describe("Task error workflow tests", () => {
                               "Failed to validate request"
                             );
 
-                            // 7) Verify only one tasks is in the test DB
+                            // 7) Verify only one task is in the test DB
                             chai
                               .request(server)
                               .get("/api/tasks/bbbbbb/false")

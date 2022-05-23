@@ -2,8 +2,10 @@ const router = require("express").Router();
 const Tasks = require("../models/Tasks");
 const { validateToken } = require("../validation");
 const { taskValidation } = require("../validation");
+
 // ***** CRUD operations ***** //
-// Create Tasks
+
+// Create a Task - post
 router.post("/", validateToken, async (req, res) => {
   data = req.body;
   await Tasks.insertMany(data)
@@ -15,7 +17,7 @@ router.post("/", validateToken, async (req, res) => {
     });
 });
 
-//Read all Tasks from specific project
+//Read all Tasks from specific project by userId and or CollabId + if its archived or not - get
 router.get("/:userId/:archived/:projectId", validateToken, async (req, res) => {
   await Tasks.find({
     $or: [
@@ -54,7 +56,7 @@ router.get("/:userId/:archived/:projectId", validateToken, async (req, res) => {
     });
 });
 
-//Read all Tasks - get
+//Read all Tasks by userId - get
 router.get("/:userId/:archived/", validateToken, async (req, res) => {
   await Tasks.find({
     userId: req.params.userId,
@@ -68,7 +70,7 @@ router.get("/:userId/:archived/", validateToken, async (req, res) => {
     });
 });
 
-// Update specific Tasks - put
+// Update specific Task - put
 router.put("/:id", validateToken, async (req, res) => {
   const id = req.params.id;
   const { error } = taskValidation(req.body);

@@ -19,14 +19,7 @@ after((done) => {
   done();
 });
 
-// Unit test collection for User
-// unit test #1(the "it" argument) is for Register
-// unit test #2(the "it" argument) is for Login
-
-//        Possible unit tests to consider for future:
-//        Profile Character Get Route.
-
-describe("/User Register & Login Test Collection", () => {
+describe("User Register & Login Test Collection", () => {
   it("Register User unit test", (done) => {
     //define User frontend input
     let user = {

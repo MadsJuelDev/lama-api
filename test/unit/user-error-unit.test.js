@@ -19,18 +19,8 @@ after((done) => {
   done();
 });
 
-// Unit test collection for User
-// unit test #1(the "it" argument) is for Register password error
-// unit test #2(the "it" argument) is for Register username error
-// unit test #3(the "it" argument) is for Register email error
-// unit test #4(the "it" argument) is for Login username error
-
-//        Possible unit tests to consider for future:
-//        Profile Character Get Route.
-
-describe("/User Register & Login Error Test Collection", () => {
+describe("User Register & Login Error Unit Test Collection", () => {
   it("should try to register a user with invalid input and return a password error", (done) => {
-    // 1) Register new user with invalid inputs
     let user = {
       username: "1234abc",
       email: "1234@abc.dk",
@@ -42,8 +32,7 @@ describe("/User Register & Login Error Test Collection", () => {
       .send(user)
       .end((err, res) => {
         // Asserts
-        expect(res.status).to.be.equal(400); //normal expect with no custom output message
-        //expect(res.status,"Status is not 400 (NOT FOUND)").to.be.equal(400); //custom output message at fail
+        expect(res.status).to.be.equal(400);
 
         expect(res.body).to.be.a("object");
         expect(res.body.error).to.be.equal(
@@ -53,7 +42,6 @@ describe("/User Register & Login Error Test Collection", () => {
       });
   });
   it("should try to register a user with invalid input and return a username error", (done) => {
-    // 1) Register new user with invalid inputs
     let user = {
       username: "1234a", //Faulty username - Joi/validation should catch this...
       email: "1234@abc.dk",
@@ -65,8 +53,7 @@ describe("/User Register & Login Error Test Collection", () => {
       .send(user)
       .end((err, res) => {
         // Asserts
-        expect(res.status).to.be.equal(400); //normal expect with no custom output message
-        //expect(res.status,"Status is not 400 (NOT FOUND)").to.be.equal(400); //custom output message at fail
+        expect(res.status).to.be.equal(400);
 
         expect(res.body).to.be.a("object");
         expect(res.body.error).to.be.equal(
@@ -76,7 +63,6 @@ describe("/User Register & Login Error Test Collection", () => {
       });
   });
   it("should try to register a user with invalid input and return a email error", (done) => {
-    // 1) Register new user with invalid inputs
     let user = {
       username: "1234abc",
       email: "1234abc.dk", //Faulty email - Joi/validation should catch this...
@@ -88,8 +74,7 @@ describe("/User Register & Login Error Test Collection", () => {
       .send(user)
       .end((err, res) => {
         // Asserts
-        expect(res.status).to.be.equal(400); //normal expect with no custom output message
-        //expect(res.status,"Status is not 400 (NOT FOUND)").to.be.equal(400); //custom output message at fail
+        expect(res.status).to.be.equal(400);
 
         expect(res.body).to.be.a("object");
         expect(res.body.error).to.be.equal('"email" must be a valid email');
@@ -99,7 +84,6 @@ describe("/User Register & Login Error Test Collection", () => {
 
   // This is needed for Login Routes
   it("Register succesfully for login unit test", (done) => {
-    // 1) Register new user
     let user = {
       username: "1234abc",
       email: "1234@abc.dk",
@@ -116,6 +100,7 @@ describe("/User Register & Login Error Test Collection", () => {
         done();
       });
   });
+
   it("should try to login a user with invalid input and return a username error", (done) => {
     let user = {
       username: "1234ab", //Faulty username - Username does not exist

@@ -42,7 +42,7 @@ after((done) => {
   done();
 });
 
-describe("Task workflow tests", () => {
+describe("Full workflow test", () => {
   it("Full test for a user workflow", (done) => {
     // 1) Register a new LaMa user
     let user = {
