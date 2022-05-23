@@ -30,7 +30,6 @@ router.get("/today/:userId/:archived/", validateToken, async (req, res) => {
     date: { $eq: todayDate },
   })
     .then((data) => {
-      console.log("Today: ", data);
       res.send(mapProdArray(data));
     })
     .catch((err) => {
@@ -55,7 +54,6 @@ router.get("/nextSeven/:userId/:archived/", validateToken, async (req, res) => {
     ],
   })
     .then((data) => {
-      console.log("Week 7", data);
       res.send(mapProdArray(data));
     })
     .catch((err) => {
