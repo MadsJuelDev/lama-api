@@ -21,6 +21,7 @@ const TaskRoutes = require("./routes/Tasks");
 const NextWeekRoutes = require("./routes/NextWeek");
 const ProjectRoutes = require("./routes/Projects");
 const AuthRoutes = require("./routes/Auth");
+const AssetsRoutes = require("./routes/Assets");
 
 require("dotenv-flow").config();
 const PORT = process.env.PORT || 4001;
@@ -40,6 +41,7 @@ app.use("/api/User", AuthRoutes);
 app.use("/api/Tasks", TaskRoutes);
 app.use("/api/nextweek", NextWeekRoutes);
 app.use("/api/Projects", ProjectRoutes);
+app.use("/api/Assets", AssetsRoutes);
 
 mongoose
   .connect(process.env.DBHOST, {

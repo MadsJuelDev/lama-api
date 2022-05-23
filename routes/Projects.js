@@ -73,17 +73,6 @@ router.get("/userId/:userId", async (req, res) => {
     });
 });
 
-// Read specific Projects - get
-router.get("/:id", validateToken, (req, res) => {
-  Projects.findById(req.params.projectId)
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({ message: err.message });
-    });
-});
-
 // Update specific Tasks - put
 router.put("/:id", validateToken, async (req, res) => {
   const id = req.params.id;

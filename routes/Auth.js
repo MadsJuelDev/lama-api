@@ -49,16 +49,6 @@ router.post("/register", async (req, res) => {
   }
 });
 
-router.get("/:email", (req, res) => {
-  User.find({ email: req.params.email })
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({ message: err.message });
-    });
-});
-
 // /login
 router.post("/login", async (req, res) => {
   //validate user login info

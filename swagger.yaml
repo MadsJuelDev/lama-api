@@ -1,59 +1,77 @@
 openapi: 3.0.0
 info:
-  title: MEN REST API
-  description: MongoDB ExpressJS NodeJS REST API
-  version: 1.0.0
+  title: LaMa Rest API
+  description: MongoDB ExpressJS NodeJS LaMa Rest API
+  version: 2.0.0
 servers:
   - url: http://localhost:4001/api/
     description: Localhost development server
-  # - url: https://smsj-men-restapi.herokuapp.com/api/
-  #   description: Heroku remote server
+  - url: https://heroku-lama-api.herokuapp.com/api/
+    description: Heroku remote server
 components:
   securitySchemes:
     ApiKeyAuth: # arbitrary name for the security scheme
       type: apiKey
       in: header # can be "header", "query" or "cookie"
-      name: auth-token
+      name: authtoken
 
   schemas:
-    hair:
+    User:
       type: object
       properties:
-        color:
+        username:
           type: string
-        style:
+        fName:
           type: string
-        assetLocation:
+        lName:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        date:
+          type: string
+        userId:
           type: string
 
-    bodyTop:
+    Tasks:
       type: object
       properties:
-        color:
+        archived:
+          type: boolean
+        isCollapsed:
+          type: boolean
+        date:
           type: string
-        style:
+        description:
           type: string
-        assetLocation:
+        urgency:
+          type: string
+        status:
+          type: string
+        projectId:
+          type: string
+        task:
+          type: string
+        userId:
           type: string
 
-    bodyBottom:
+    Projects:
       type: object
       properties:
-        color:
+        name:
           type: string
-        style:
+        projectId:
           type: string
-        assetLocation:
+        userId:
           type: string
-
-    shoe:
-      type: object
-      properties:
-        color:
+        collabIdOne:
           type: string
-        style:
+        collabIdTwo:
           type: string
-        assetLocation:
+        collabIdThree:
+          type: string
+        collabIdFour:
           type: string
 
 paths:
@@ -92,7 +110,7 @@ paths:
             schema:
               type: object
               properties:
-                email:
+                username:
                   type: string
                 password:
                   type: string
@@ -110,201 +128,255 @@ paths:
                   data:
                     type: string
 
-  /hair:
-    get:
-      summary: Retrieves a list of all added hair
-      description: Retrieves a list of hair objects as JSON objects.
-      responses:
-        200:
-          description: A list of hair JSON objects in an array.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/hair"
-
+  /Projects:
     post:
-      summary: Create a new hair object
-      description: Create a new hair object
+      summary: Create a new Project object
+      description: Create a new Project object
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/hair"
+              $ref: "#/components/schemas/Projects"
 
       responses:
         201:
-          description: hair created succesfully
+          description: Project created succesfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/hair"
+                $ref: "#/components/schemas/Projects"
 
-  /hair/{id}:
-    get:
-      summary: Specific hair object
-      description: Retrieves a specific hair object based on its id.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: MongoDB id
-          schema:
-            type: string
-      responses:
-        200:
-          description: A hair object in the format of a JSON object.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/hair"
-
-    put:
-      summary: Updates a specific hair object
-      description: Updates a specific hair object based on its id
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: MongoDB id
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/hair"
-
-      responses:
-        201:
-          description: hair object updated succesfully
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/hair"
-
-    delete:
-      summary: Deletes a specific hair object
-      description: Deletes a specific hair object based on its id
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: MongoDB id
-          schema:
-            type: string
-
-      responses:
-        201:
-          description: hair object deleted succesfully
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/hair"
-
-  /hair/color/{color}:
-    get:
-      summary: Get all specific hair Color
-      description: Retrieves a list of all with a specific hair color. IS CASE SENSATIIVE
-      parameters:
-        - in: path
-          name: color
-          required: true
-          description: MongoDB id
-          schema:
-            type: string
-      responses:
-        200:
-          description: All JSON object with specific hair color.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/hair"
-
-  /hair/style/{style}:
-    get:
-      summary: Get all specific hair Style
-      description: Retrieves a list of all with a specific hair style.
-      parameters:
-        - in: path
-          name: style
-          required: true
-          description: MongoDB id
-          schema:
-            type: string
-      responses:
-        200:
-          description: All JSON object with specific hair style.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/hair"
-
-  /bodyTop:
-    get:
-      summary: Retrieves a list of all added bodyTop
-      description: Retrieves a list of bodyTop objects as JSON objects.
-      responses:
-        200:
-          description: A list of bodyTop JSON objects in an array.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/bodyTop"
-
+  /Tasks:
     post:
-      summary: Create a new bodyTop object
-      description: Create a new bodyTop object
+      summary: Create a new Task object
+      description: Create a new Task object
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/bodyTop"
+              $ref: "#/components/schemas/Tasks"
 
       responses:
         201:
-          description: bodyTop created succesfully
+          description: Task created succesfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/bodyTop"
+                $ref: "#/components/schemas/Tasks"
 
-  /bodyTop/{id}:
+  /Projects/collab/{collabId}:
     get:
-      summary: Specific bodyTop object
-      description: Retrieves a specific bodyTop object based on its id.
+      summary: Get all Projects based on Collab ID
+      description: Retrieves a list of all projects with a Collab Id attached. IS CASE SENSATIIVE
       parameters:
         - in: path
-          name: id
+          name: collabId
           required: true
-          description: MongoDB id
+          description: MongoDB Project Collab ID.
           schema:
             type: string
       responses:
         200:
-          description: A bodyTop object in the format of a JSON object.
+          description: All JSON object with specific project Collab Id.
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/bodyTop"
+                  $ref: "#/components/schemas/Projects"
 
+  /Projects/all/{collabId}:
+    get:
+      summary: Get All Projects by CollabID
+      description: Retrieves a list of all projects either created by (equal to the collabId) or has the collabId.
+      parameters:
+        - in: path
+          name: collabId
+          required: true
+          description: MongoDB Project Collab id
+          schema:
+            type: string
+      responses:
+        200:
+          description: All JSON object with specific project collab ID as collabId or userId.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Projects"
+
+  /Projects/userId/{userId}:
+    get:
+      summary: Get All Projects by userID
+      description: Retrieves a list of all projects that has been created by the userId.
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          description: MongoDB Project userId
+          schema:
+            type: string
+      responses:
+        200:
+          description: All JSON object with specific project userId.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Projects"
+
+  /Projects/{id}:
+    get:
+      summary: Get All Projects by userID
+      description: Retrieves a list of all projects that has been created by the userId.
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          description: MongoDB Project userId
+          schema:
+            type: string
+      responses:
+        200:
+          description: All JSON object with specific project userId.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Projects"
+
+  /Tasks/{userId}/{archived}/{projectId}:
+    get:
+      summary: Get All Tasks by userID for a specific project
+      description: Retrieves a list of all Task where archived is false, for a specific project created by the user.
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          description: MongoDB Task userId
+          schema:
+            type: string
+
+        - in: path
+          name: archived
+          required: true
+          description: MongoDB Task archived boolean
+          schema:
+            type: boolean
+
+        - in: path
+          name: projectId
+          required: true
+          description: MongoDB Task projectId
+          schema:
+            type: string
+
+      responses:
+        200:
+          description: All JSON objects with specific Task userId, projectId and archived false.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Tasks"
+
+  /Tasks/{userId}/{archived}:
+    get:
+      summary: Get All Tasks by userID
+      description: Retrieves a list of all Task where archived is false.
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          description: MongoDB Task userId
+          schema:
+            type: string
+
+        - in: path
+          name: archived
+          required: true
+          description: MongoDB Task archived boolean
+          schema:
+            type: boolean
+
+      responses:
+        200:
+          description: All JSON objects with specific Task userId and archived false.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Tasks"
+
+  /nextweek/today/{userId}/{archived}:
+    get:
+      summary: Get All Tasks for the current date by userID
+      description: Retrieves a list of all Task for the current date by userID where archived is false.
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          description: MongoDB Task userId
+          schema:
+            type: string
+
+        - in: path
+          name: archived
+          required: true
+          description: MongoDB Task archived boolean
+          schema:
+            type: boolean
+
+      responses:
+        200:
+          description: All JSON objects with Tasks for today by userId and archived false.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Tasks"
+
+  /nextweek/nextSeven/{userId}/{archived}:
+    get:
+      summary: Get All Tasks for the next seven days by userID
+      description: Retrieves a list of all Tasks for the next seven days by userID where archived is false.
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          description: MongoDB Task userId
+          schema:
+            type: string
+
+        - in: path
+          name: archived
+          required: true
+          description: MongoDB Task archived boolean
+          schema:
+            type: boolean
+
+      responses:
+        200:
+          description: All JSON objects with Tasks for next seven days by userId and archived false.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Tasks"
+
+  /Projects/{id}:
     put:
-      summary: Updates a specific bodyTop object
-      description: Updates a specific bodyTop object based on its id
+      summary: Updates a specific project object
+      description: Updates a specific project object based on its id
       parameters:
         - in: path
           name: id
@@ -317,133 +389,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/bodyTop"
+              $ref: "#/components/schemas/Projects"
 
       responses:
         201:
-          description: bodyTop object updated succesfully
+          description: Project object updated succesfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/bodyTop"
+                $ref: "#/components/schemas/Projects"
 
-    delete:
-      summary: Deletes a specific bodyTop object
-      description: Deletes a specific bodyTop object based on its id
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: MongoDB id
-          schema:
-            type: string
-
-      responses:
-        201:
-          description: bodyTop object deleted succesfully
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/bodyTop"
-
-  /bodyTop/color/{color}:
-    get:
-      summary: Get all specific bodyTop Color
-      description: Retrieves a list of all with a specific bodyTop color. IS CASE SENSATIIVE
-      parameters:
-        - in: path
-          name: color
-          required: true
-          description: MongoDB id
-          schema:
-            type: string
-      responses:
-        200:
-          description: All JSON object with specific bodyTop color.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/bodyTop"
-
-  /bodyTop/style/{style}:
-    get:
-      summary: Get all specific bodyTop Style
-      description: Retrieves a list of all with a specific bodyTop style.
-      parameters:
-        - in: path
-          name: style
-          required: true
-          description: MongoDB id
-          schema:
-            type: string
-      responses:
-        200:
-          description: All JSON object with specific bodyTop style.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/bodyTop"
-
-  /bodyBottom:
-    get:
-      summary: Retrieves a list of all added bodyBottom
-      description: Retrieves a list of bodyBottom objects as JSON objects.
-      responses:
-        200:
-          description: A list of bodyBottom JSON objects in an array.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/bodyBottom"
-
-    post:
-      summary: Create a new bodyBottom object
-      description: Create a new bodyBottom object
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/bodyBottom"
-
-      responses:
-        201:
-          description: bodyBottom created succesfully
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/bodyBottom"
-
-  /bodyBottom/{id}:
-    get:
-      summary: Specific bodyBottom object
-      description: Retrieves a specific bodyBottom object based on its id.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: MongoDB id
-          schema:
-            type: string
-      responses:
-        200:
-          description: A bodyBottom object in the format of a JSON object.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/bodyBottom"
-
+  /Tasks/{id}:
     put:
-      summary: Updates a specific bodyBottom object
-      description: Updates a specific bodyBottom object based on its id
+      summary: Updates a specific Task object
+      description: Updates a specific Task object based on its id
       parameters:
         - in: path
           name: id
@@ -456,19 +415,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/bodyBottom"
+              $ref: "#/components/schemas/Tasks"
 
       responses:
         201:
-          description: bodyBottom object updated succesfully
+          description: Task object updated succesfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/bodyBottom"
+                $ref: "#/components/schemas/Tasks"
 
+  /Projects/{id}:
     delete:
-      summary: Deletes a specific bodyBottom object
-      description: Deletes a specific bodyBottom object based on its id
+      summary: Deletes a specific Project object
+      description: Deletes a specific Project object based on its id
       parameters:
         - in: path
           name: id
@@ -479,189 +439,8 @@ paths:
 
       responses:
         201:
-          description: bodyBottom object deleted succesfully
+          description: Project object deleted succesfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/bodyBottom"
-
-  /bodyBottom/color/{color}:
-    get:
-      summary: Get all specific bodyBottom Color
-      description: Retrieves a list of all with a specific bodyBottom color. IS CASE SENSATIIVE
-      parameters:
-        - in: path
-          name: color
-          required: true
-          description: MongoDB id
-          schema:
-            type: string
-      responses:
-        200:
-          description: All JSON object with specific bodyBottom color.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/bodyBottom"
-
-  /bodyBottom/style/{style}:
-    get:
-      summary: Get all specific bodyBottom Style
-      description: Retrieves a list of all with a specific bodyBottom style.
-      parameters:
-        - in: path
-          name: style
-          required: true
-          description: MongoDB id
-          schema:
-            type: string
-      responses:
-        200:
-          description: All JSON object with specific bodyBottom style.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/bodyBottom"
-
-  /shoe:
-    get:
-      summary: Retrieves a list of all added shoes
-      description: Retrieves a list of shoe objects as JSON objects.
-      responses:
-        200:
-          description: A list of shoe JSON objects in an array.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/shoe"
-
-    post:
-      summary: Create a new shoe object
-      description: Create a new shoe object
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/shoe"
-
-      responses:
-        201:
-          description: shoe created succesfully
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/shoe"
-
-  /shoe/{id}:
-    get:
-      summary: Specific shoe object
-      description: Retrieves a specific shoe object based on its id.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: MongoDB id
-          schema:
-            type: string
-      responses:
-        200:
-          description: A shoe object in the format of a JSON object.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/shoe"
-
-    put:
-      summary: Updates a specific shoe object
-      description: Updates a specific shoe object based on its id
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: MongoDB id
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/shoe"
-
-      responses:
-        201:
-          description: shoe object updated succesfully
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/shoe"
-
-    delete:
-      summary: Deletes a specific shoe object
-      description: Deletes a specific shoe object based on its id
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: MongoDB id
-          schema:
-            type: string
-
-      responses:
-        201:
-          description: shoe object deleted succesfully
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/shoe"
-
-  /shoe/color/{color}:
-    get:
-      summary: Get all specific shoe Color
-      description: Retrieves a list of all with a specific shoe color. IS CASE SENSATIIVE
-      parameters:
-        - in: path
-          name: color
-          required: true
-          description: MongoDB id
-          schema:
-            type: string
-      responses:
-        200:
-          description: All JSON object with specific shoe color.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/shoe"
-
-  /shoe/style/{style}:
-    get:
-      summary: Get all specific shoe Style
-      description: Retrieves a list of all with a specific shoe style.
-      parameters:
-        - in: path
-          name: style
-          required: true
-          description: MongoDB id
-          schema:
-            type: string
-      responses:
-        200:
-          description: All JSON object with specific shoe style.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/shoe"
+                $ref: "#/components/schemas/Projects"
