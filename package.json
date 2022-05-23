@@ -1,7 +1,7 @@
 {
-  "name": "men_rest_v1",
+  "name": "lama_rest_v2",
   "version": "1.0.0",
-  "description": "MongoDB-ExpressJS-NodeJS RESTful API",
+  "description": "MongoDB-ExpressJS-NodeJS LaMa RESTful API",
   "main": "server.js",
   "scripts": {
     "start-dev": "cross-env NODE_ENV=development nodemon server.js",
