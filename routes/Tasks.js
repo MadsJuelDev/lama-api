@@ -1,6 +1,10 @@
 const router = require("express").Router();
 const Tasks = require("../models/Tasks");
-const { validateToken } = require("../validation");
+const {
+  validateToken,
+  taskMoveValidation,
+  taskArchiveValidation,
+} = require("../validation");
 const { taskValidation } = require("../validation");
 
 // ***** CRUD operations ***** //
@@ -74,6 +78,62 @@ router.get("/:userId/:archived/", validateToken, async (req, res) => {
 router.put("/:id", validateToken, async (req, res) => {
   const id = req.params.id;
   const { error } = taskValidation(req.body);
+  if (error) {
+    return res.status(400).json({
+      message: "Failed to validate request",
+    });
+  }
+
+  await Tasks.findByIdAndUpdate(id, req.body)
+    .then((data) => {
+      if (!data) {
+        res.status(404).send({
+          message:
+            "Cannot update Tasks with id=" +
+            id +
+            ". Maybe Tasks was not found?",
+        });
+      } else {
+        res.send({ message: "Tasks was succesfully updated!" });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({ message: "Error updating Tasks with id=" + id });
+    });
+});
+
+// Update archive specific Task - put
+router.put("/archive/:id", validateToken, async (req, res) => {
+  const id = req.params.id;
+  const { error } = taskArchiveValidation(req.body);
+  if (error) {
+    return res.status(400).json({
+      message: "Failed to validate request",
+    });
+  }
+
+  await Tasks.findByIdAndUpdate(id, req.body)
+    .then((data) => {
+      if (!data) {
+        res.status(404).send({
+          message:
+            "Cannot update Tasks with id=" +
+            id +
+            ". Maybe Tasks was not found?",
+        });
+      } else {
+        res.send({ message: "Tasks was succesfully updated!" });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({ message: "Error updating Tasks with id=" + id });
+    });
+});
+
+// Update move Task - put
+router.put("/move/:id", validateToken, async (req, res) => {
+  const id = req.params.id;
+  const { error } = taskMoveValidation(req.body);
   if (error) {
     return res.status(400).json({
       message: "Failed to validate request",

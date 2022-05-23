@@ -309,15 +309,11 @@ describe("Task workflow tests", () => {
 
                         // 6) update a specific task
                         let updateTask2 = {
-                          archived: false,
                           isCollapsed: true,
-                          date: "",
                           description: "",
                           urgency: "medium",
                           status: "Doing",
-                          projectId: "IAmAUniqueId2",
                           task: "test",
-                          userId: "1234abc",
                         };
 
                         chai
@@ -449,22 +445,14 @@ it("register + login the user, create a task in the db under next_7 with todays 
                       expect(res.body).to.be.a("array");
                       expect(res.body.length).to.be.eql(1);
 
-                      // 6) update the task
+                      // 6) update the task with archived true
                       let updateTask3 = {
                         archived: true,
-                        isCollapsed: true,
-                        date: `${dateFour}`,
-                        description: "",
-                        urgency: "",
-                        status: "To Do",
-                        projectId: "NEXT_7",
-                        task: "test3",
-                        userId: "cccccc",
                       };
 
                       chai
                         .request(server)
-                        .put("/api/tasks/" + createdTask._id)
+                        .put("/api/tasks/archive/" + createdTask._id)
                         .set({ authtoken: token })
                         .send(updateTask3)
                         .end((err, res) => {

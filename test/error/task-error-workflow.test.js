@@ -283,15 +283,11 @@ describe("Task error workflow tests", () => {
 
                         // 6) Attempt to update the task with no task name
                         let updateTask2 = {
-                          archived: false,
                           isCollapsed: true,
-                          date: "",
                           description: "",
                           urgency: "medium",
                           status: "Doing",
-                          projectId: "IAmAUniqueId2",
                           task: "",
-                          userId: "bbbbbb",
                         };
 
                         chai

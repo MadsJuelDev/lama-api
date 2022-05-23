@@ -23,15 +23,27 @@ const loginValidation = (data) => {
 //validating task
 const taskValidation = (data) => {
   const schema = Joi.object({
-    archived: Joi.boolean(),
     isCollapsed: Joi.boolean(),
-    date: Joi.string().min(0),
     description: Joi.string().min(0),
     urgency: Joi.string().min(0),
     status: Joi.string().min(0),
-    projectId: Joi.string().min(1).max(255),
     task: Joi.string().min(1).max(255).required(),
-    userId: Joi.string().min(1).max(255).required(),
+  });
+  return schema.validate(data);
+};
+
+//move task validation
+const taskMoveValidation = (data) => {
+  const schema = Joi.object({
+    status: Joi.string().min(0),
+  });
+  return schema.validate(data);
+};
+
+//archive task validation
+const taskArchiveValidation = (data) => {
+  const schema = Joi.object({
+    archived: Joi.boolean(),
   });
   return schema.validate(data);
 };
@@ -50,6 +62,8 @@ const validateToken = (req, res, next) => {
 };
 module.exports = {
   taskValidation,
+  taskMoveValidation,
+  taskArchiveValidation,
   registerValidation,
   loginValidation,
   validateToken,
