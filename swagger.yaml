@@ -390,7 +390,6 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/Projects"
-
       responses:
         201:
           description: Project object updated succesfully
@@ -398,7 +397,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Projects"
-
     delete:
       summary: Deletes a specific Project object
       description: Deletes a specific Project object based on its id
@@ -409,7 +407,6 @@ paths:
           description: MongoDB id
           schema:
             type: string
-
       responses:
         201:
           description: Project object deleted succesfully
