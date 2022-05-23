@@ -51,7 +51,7 @@ const taskArchiveValidation = (data) => {
 //archive task validation
 const taskCollapseValidation = (data) => {
   const schema = Joi.object({
-    archived: Joi.boolean(),
+    isCollapsed: Joi.boolean(),
   });
   return schema.validate(data);
 };
