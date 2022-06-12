@@ -142,4 +142,26 @@ router.post(
   }
 );
 
+// Find email of user - get
+router.get(
+  "/username/:username",
+  bodyParser.urlencoded({ extended: false }),
+  async (req, res) => {
+    await User.find({ username: req.params.username })
+      .then((data) => {
+        res.send(mapProdArray(data));
+      })
+      .catch((err) => {
+        res.status(500).send({ message: err.message });
+      });
+  }
+);
+
+function mapProdArray(obj) {
+  let outputArr = obj.map((element) => ({
+    email: element.email,
+  }));
+  return outputArr;
+}
+
 module.exports = router;
