@@ -52,10 +52,10 @@ router.post("/register", async (req, res) => {
 // Logs In the User - post
 router.post("/login", async (req, res) => {
   //validate user login info
-  const { error } = loginValidation(req.body);
-  if (error) {
-    return res.status(418).json({ error: error.details[0].message });
-  }
+  // const { error } = loginValidation(req.body);
+  // if (error) {
+  //   return res.status(418).json({ error: error.details[0].message });
+  // }
 
   //if info is valid find user
   const user = await User.findOne({ username: req.body.username });
