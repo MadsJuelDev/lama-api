@@ -54,7 +54,7 @@ router.post("/login", async (req, res) => {
   //validate user login info
   const { error } = loginValidation(req.body);
   if (error) {
-    return res.status(400).json({ error: error.details[0].message });
+    return res.status(418).json({ error: error.details[0].message });
   }
 
   //if info is valid find user
