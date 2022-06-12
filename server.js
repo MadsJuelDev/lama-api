@@ -2,8 +2,6 @@ const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
 
-const bodyParser = require("body-parser");
-
 // Croos-origin resource sharing. Sets browser security to allow sharing via http.
 const cors = require("cors");
 app.use(cors());
@@ -36,8 +34,7 @@ app.listen(PORT, function () {
 });
 
 //Parse request as JSON
-// app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json());
 
 //routes (get,post,put,delete (CRUD))
 app.use("/api/User", AuthRoutes);

@@ -3,6 +3,7 @@ const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const moment = require("moment");
+const bodyParser = require("body-parser");
 
 let currentDate = moment().format("DD/MM/YYYY");
 const { registerValidation, loginValidation } = require("../validation");
@@ -91,5 +92,54 @@ router.post("/login", async (req, res) => {
     data: { token },
   });
 });
+
+// Logs In the User to Unity - post
+router.post(
+  "/unitylogin",
+  bodyParser.urlencoded({ extended: false }),
+  async (req, res) => {
+    //validate user login info
+    const { error } = loginValidation(req.body);
+    if (error) {
+      return res.status(418).json({ error: error.details[0].message });
+    }
+
+    //if info is valid find user
+    const user = await User.findOne({ username: req.body.username });
+
+    //Throw error if username is wrong
+    if (!user) {
+      return res.status(400).json({ error: "User does not exist" });
+    }
+
+    //user exists check for password correctness
+    const validPassword = await bcrypt.compare(
+      req.body.password,
+      user.password
+    );
+
+    //throw error if password is wrong
+    if (!validPassword) {
+      return res.status(400).json({ error: "Password is wrong" });
+    }
+
+    //create authentication token
+    const token = jwt.sign(
+      {
+        //payload
+        username: user.username,
+        email: user.email,
+      },
+      //TOKEN_SECRET
+      process.env.TOKEN_SECRET,
+      { expiresIn: process.env.JWT_EXPIRES_IN }
+      //Expiration time
+    );
+    //attach authentication token to header
+    res.header("auth-token", token).json({
+      token,
+    });
+  }
+);
 
 module.exports = router;
